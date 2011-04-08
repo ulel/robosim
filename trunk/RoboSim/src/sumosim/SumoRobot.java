@@ -59,6 +59,9 @@ public class SumoRobot extends Scene {
 
 	@Override
 	protected void step() {
+		r1.step();
+		r2.step();
+		
 		//r1 controls
 		if (keys[KeyEvent.VK_LEFT]) r1.turnCounterClockwise();
 		if (keys[KeyEvent.VK_RIGHT]) r1.turnClockwise();
