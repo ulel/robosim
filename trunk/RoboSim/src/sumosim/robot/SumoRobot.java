@@ -1,6 +1,6 @@
 package sumosim.robot;
 
-import sumosim.RoboSumoGame;
+import sumosim.RoboSumoMatch;
 import sumosim.robot.components.*;
 import sumosim.robot.components.sensors.*;
 import net.phys2d.math.Vector2f;
@@ -24,17 +24,17 @@ public class SumoRobot extends Robot {
 		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
 		
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
-		this.sensorA.removeBit(RoboSumoGame.DOHYO_ARENA_BITMASK);
+		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
-		this.sensorB.removeBit(RoboSumoGame.DOHYO_ARENA_BITMASK);
+		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorB.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
 		
-		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoGame.DOHYO_ARENA_BITMASK);
+		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
 	}
 
 
