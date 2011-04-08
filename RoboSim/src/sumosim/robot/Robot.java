@@ -155,4 +155,13 @@ public class Robot {
 		
 		this.missileFired = 0;
 	}
+	
+	
+	/**
+	 * The step method is called by the simulator for each step.
+	 * Robot behavior can be defined in this method.
+	 */
+	public void step() {
+		
+	}
 }
