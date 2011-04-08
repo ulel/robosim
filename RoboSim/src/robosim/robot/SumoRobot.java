@@ -41,36 +41,25 @@ public class SumoRobot extends Robot {
 	
 	private float fwd_force = 150;
 	private float turn_force = 100;
-	private Vector2f getDirectionalForce(float force) {
-		float r = this.getRotation();
-		float x = (float) (Math.sin(r) * force);
-		float y = (float) (Math.cos(r) * force);
-		
-		return new Vector2f(x,y);
-	}
 	
 	public void forward() {
-		Vector2f force = getDirectionalForce(fwd_force);
-		wheel_left.getComponentBody().addForce(new Vector2f(-force.x,force.y));
-		wheel_right.getComponentBody().addForce(new Vector2f(-force.x,force.y));
+		wheel_left.setPower(fwd_force);
+		wheel_right.setPower(fwd_force);
 	}
 	
 	public void backward() {
-		Vector2f force = getDirectionalForce(fwd_force);
-		wheel_left.getComponentBody().addForce(new Vector2f(force.x,-force.y));
-		wheel_right.getComponentBody().addForce(new Vector2f(force.x,-force.y));
+		wheel_left.setPower(-fwd_force);
+		wheel_right.setPower(-fwd_force);
 	}
 	
 	public void turnClockwise() {
-		Vector2f force = getDirectionalForce(turn_force);
-		wheel_left.getComponentBody().addForce(new Vector2f(force.x,-force.y));
-		wheel_right.getComponentBody().addForce(new Vector2f(-force.x,force.y));
+		wheel_left.setPower(-turn_force);
+		wheel_right.setPower(turn_force);
 	}
 	
 	public void turnCounterClockwise() {
-		Vector2f force = getDirectionalForce(turn_force);
-		wheel_left.getComponentBody().addForce(new Vector2f(-force.x,force.y));
-		wheel_right.getComponentBody().addForce(new Vector2f(force.x,-force.y));
+		wheel_left.setPower(turn_force);
+		wheel_right.setPower(-turn_force);
 	}
 	
 	private int missileFired = 61;

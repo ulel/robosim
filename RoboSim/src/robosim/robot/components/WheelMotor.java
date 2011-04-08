@@ -1,5 +1,6 @@
 package robosim.robot.components;
 
+import net.phys2d.math.Vector2f;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
@@ -20,7 +21,14 @@ public class WheelMotor extends RobotComponent {
 		return new Box(5, 20);
 	}
 
-	
-	// TODO: find a good way of simulating this.. 
-	public void setPower(float p) { }
+	/**
+	 * Sets the power on for this motor.
+	 */
+	public void setPower(float p) {
+		float r = this.robot.getRotation();
+		float x = (float) (-Math.sin(r) * p);
+		float y = (float) (Math.cos(r) * p);
+		
+		this.componentBody.addForce(new Vector2f(x, y));
+	}
 }
