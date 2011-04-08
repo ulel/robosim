@@ -35,6 +35,8 @@ public abstract class Sensor {
 		
 		world.add(sensorBody);
 		this.addSensorJoint();
+		
+		this.excludedBodies = new BodyList();
 	}
 	
 	
@@ -150,4 +152,29 @@ public abstract class Sensor {
 		this.world.remove(this.sensorJoint);
 		this.sensorJoint = null;
 	}
+	
+	
+	private long bitmask = Long.MAX_VALUE;
+	public long getBitmask() {
+		return this.bitmask;
+	}
+	public void setBitmask(long m) {
+		this.bitmask = m;
+	}
+	public void removeBit(long m) {
+		this.bitmask -= m & this.bitmask;
+	}
+	public void addBit(long m) {
+		this.bitmask |= m;
+	}
+	
+	private BodyList excludedBodies;
+	public BodyList getExcludedBodies() {
+		return excludedBodies;
+	}
+	public void addExcludedBody(Body b) {
+		if (!this.excludedBodies.contains(b))
+			this.excludedBodies.add(b);
+	}
+	
 }

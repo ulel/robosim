@@ -1,12 +1,8 @@
 package sumosim.robot.sensors;
 
-import net.phys2d.raw.Body;
-import net.phys2d.raw.Collide;
-import net.phys2d.raw.Contact;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
-import sumosim.SumoRobot;
 import sumosim.robot.Robot;
 
 /**
@@ -15,32 +11,15 @@ import sumosim.robot.Robot;
  * 
  * @author Pier
  */
-public class GroundSensor extends Sensor {
-	
-	public GroundSensor(World w, Robot r) {
+public class GroundSensor extends ContactSensor {
+
+	public GroundSensor(World w, Robot r, long groundBit) {
 		super(w, r);
+		this.setBitmask(groundBit);
 	}
 	
 	@Override
 	protected DynamicShape createDefaultSensorShape() {
 		return new Box(2, 2);
 	}
-	
-	// Returns 1f if the sensor is no longer 'above' the dohyo's arena body. 0f otherwise.
-	@Override
-	protected float calcSensorValue() {
-		Body arenaBody = this.world.getBodies().getBodyByName(SumoRobot.DOHYO_ARENA);
-		if (arenaBody == null)
-			return 1f;
-		
-		this.contactPoints[0] = new Contact();
-		this.contactPoints[1] = new Contact();
-		
-		if (Collide.collide(contactPoints, this.sensorBody, arenaBody, 1f) > 0)
-			return 0f;
-		else
-			return 1f;
-	}
-
-	
 }

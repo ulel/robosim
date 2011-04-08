@@ -71,14 +71,16 @@ public class ProximitySensor extends Sensor {
 		contactPoints[1] = new Contact();
 		
 		//Get all robot hulls.
-		BodyList bdList = this.world.getBodies().getBodiesByName(Robot.ROBOT_HULL); 
+		BodyList bdList = this.world.getBodies();
 		
 		int numBodies = bdList.size();
 		for (int i = 0; i < numBodies; i++) {
 			Body bd = bdList.get(i);
 			
-			//Don't check the body of the sensor's robot.
-			if (bd == this.robot.getHull())
+			if ((bd.getBitmask() & this.getBitmask()) == 0)
+				continue;
+			
+			if (this.getExcludedBodies().contains(bd))
 				continue;
 			
 			int numCollisions = Collide.collide(contactPoints, this.sensorBody, bd, 1f);
