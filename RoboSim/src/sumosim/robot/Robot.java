@@ -1,5 +1,7 @@
 package sumosim.robot;
 
+import java.awt.geom.AffineTransform;
+
 import sumosim.robot.sensors.*;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
@@ -29,39 +31,55 @@ public class Robot {
 	public Robot(World world, float posX, float posY, float rotation, float mass) {
 		this.world = world;
 		
-		hull = new Body(Robot.ROBOT_HULL, new Box(40, 40), mass);
+		hull = new Body(Robot.ROBOT_HULL, new Box(30, 30), mass);
 		hull.setBitmask(ROBOT_HULL_BITMASK);
 		hull.setFriction(0.2f);
-		hull.setPosition(posX, posY);
-		//hull.setRotation(rotation);
 		
-		wheel1 = new Body(Robot.ROBOT_WHEEL, new Box(10, 20), 1);
+		wheel1 = new Body(Robot.ROBOT_WHEEL, new Box(5, 15), 1);
 		wheel1.setBitmask(ROBOT_WHEEL_BITMASK);
-		wheel1.setPosition(posX - 13f, posY);
 		wheel1.setDamping(0.1f);
 
-		wheel2 = new Body(Robot.ROBOT_WHEEL, new Box(10, 20), 1);
+		wheel2 = new Body(Robot.ROBOT_WHEEL, new Box(5, 15), 1);
 		wheel2.setBitmask(ROBOT_WHEEL_BITMASK);
-		wheel2.setPosition(posX + 13f, posY);
 		wheel2.setDamping(0.1f);
 		
-//		world.add(new FixedJoint(wheel1, wheel2));
-		world.add(new FixedJoint(hull, wheel1));//new BasicJoint(hull, wheel1, new Vector2f(posX - 11.5f, posY))
-		world.add(new FixedJoint(hull, wheel2));//new BasicJoint(hull, wheel2, new Vector2f(posX + 11.5f, posY))
-
+		AffineTransform t = new AffineTransform();
+		t.translate(posX, posY);
+		hull.setPosition((float)t.getTranslateX(), (float)t.getTranslateY());
+		hull.setRotation(rotation);
+		
+		t = new AffineTransform();
+		t.translate(posX, posY);
+		t.rotate(rotation);
+		t.translate(-10, 0);
+		wheel1.setPosition((float)t.getTranslateX() , (float)t.getTranslateY());
+		wheel1.setRotation(rotation);
+		
+		t = new AffineTransform();
+		t.translate(posX, posY);
+		t.rotate(rotation);
+		t.translate(10, 0);
+		wheel2.setPosition((float)t.getTranslateX(), (float)t.getTranslateY());
+		wheel2.setRotation(rotation);
+		
 		world.add(hull);
 		world.add(wheel1);
 		world.add(wheel2);
 		
+		world.add(new FixedJoint(wheel1, wheel2));
+		world.add(new FixedJoint(hull, wheel1));
+		world.add(new FixedJoint(hull, wheel2));
+		
+		
 		this.sensorA = new ProximitySensor(world, this);
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
-		this.sensorA.setPosition(0, 18);
+		this.sensorA.setPosition(0, 9);
 		
 		this.sensorB = new ContactSensor(world, this);
 		this.sensorB.setRotation((float)Math.PI);
-		this.sensorB.setPosition(0, -20);
-		this.sensorB.setSensorShape(new Box(30, 5));
+		this.sensorB.setPosition(0, -15);
+		this.sensorB.setSensorShape(new Box(15, 2.5f));
 		
 		this.sensorC = new GroundSensor(world, this);
 	}
@@ -79,6 +97,7 @@ public class Robot {
 	public Body getHull() {
 		return this.hull;
 	}
+	
 	
 	private Vector2f getForce() {
 		float r = hull.getRotation();

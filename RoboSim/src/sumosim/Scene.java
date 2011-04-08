@@ -381,7 +381,7 @@ public abstract class Scene {
 		float yo = (float) (Math.sin(rot) * r);
 		
 		g.drawOval((int) (x-r),(int) (y-r),(int) (r*2),(int) (r*2));
-		g.drawLine((int) x,(int) y,(int) (x+xo),(int) (y+yo));
+		//g.drawLine((int) x,(int) y,(int) (x+xo),(int) (y+yo));
 	}
 	
 	/**
