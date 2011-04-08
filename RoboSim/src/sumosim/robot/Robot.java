@@ -2,6 +2,7 @@ package sumosim.robot;
 
 import java.awt.geom.AffineTransform;
 
+import sumosim.SumoRobot;
 import sumosim.robot.sensors.*;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
@@ -75,13 +76,18 @@ public class Robot {
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
 		this.sensorA.setPosition(0, 9);
+		this.sensorA.removeBit(SumoRobot.DOHYO_ARENA_BITMASK);
+		this.sensorA.addExcludedBody(this.hull);
 		
 		this.sensorB = new ContactSensor(world, this);
 		this.sensorB.setRotation((float)Math.PI);
 		this.sensorB.setPosition(0, -15);
 		this.sensorB.setSensorShape(new Box(15, 2.5f));
+		this.sensorB.removeBit(SumoRobot.DOHYO_ARENA_BITMASK);
+		this.sensorB.addExcludedBody(this.hull);
 		
-		this.sensorC = new GroundSensor(world, this);
+		this.sensorC = new GroundSensor(world, this, SumoRobot.DOHYO_ARENA_BITMASK);
+		
 	}
 	
 	public float getPosX() {

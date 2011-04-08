@@ -376,9 +376,9 @@ public abstract class Scene {
 		float x = body.getPosition().getX();
 		float y = body.getPosition().getY();
 		float r = circle.getRadius();
-		float rot = body.getRotation();
-		float xo = (float) (Math.cos(rot) * r);
-		float yo = (float) (Math.sin(rot) * r);
+		//float rot = body.getRotation();
+		//float xo = (float) (Math.cos(rot) * r);
+		//float yo = (float) (Math.sin(rot) * r);
 		
 		g.drawOval((int) (x-r),(int) (y-r),(int) (r*2),(int) (r*2));
 		//g.drawLine((int) x,(int) y,(int) (x+xo),(int) (y+yo));
