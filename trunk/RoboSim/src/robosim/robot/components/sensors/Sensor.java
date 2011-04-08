@@ -16,6 +16,7 @@ public abstract class Sensor extends RobotComponent {
 	public static final long BODY_BITMASK = 0;
 	private static final float SENSOR_WEIGHT = 0.00000001f; //weight of 0 would mess up physics simulation.
 	
+	protected float sensorValue;
 	protected Contact[] contactPoints;
 	private long bitmask = Long.MAX_VALUE; // All bits set.
 	private BodyList excludedBodies;
@@ -23,10 +24,9 @@ public abstract class Sensor extends RobotComponent {
 	public Sensor(World w, Robot r, float posX, float posY, float rotation) {
 		super(w, r, posX, posY, rotation, SENSOR_WEIGHT);
 		
+		this.sensorValue = 0f;
 		this.contactPoints = new Contact[] { new Contact(), new Contact() };
-		
 		this.componentBody.setBitmask(BODY_BITMASK);
-		
 		this.excludedBodies = new BodyList();
 	}
 	
@@ -81,7 +81,7 @@ public abstract class Sensor extends RobotComponent {
 	 * Returns the sensor's value.
 	 */
 	public float getSensorValue() {
-		return this.calcSensorValue();
+		return this.sensorValue;
 	}
 	
 	/**
@@ -95,6 +95,10 @@ public abstract class Sensor extends RobotComponent {
 	 */
 	public Contact[] getContactPoints() {
 		return this.contactPoints;
+	}
+	
+	public void update() {
+		this.sensorValue = this.calcSensorValue();
 	}
 
 }

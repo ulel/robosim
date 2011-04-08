@@ -81,12 +81,11 @@ public class RoboSumoMatch extends Scene {
 	protected void draw(Graphics2D g) {
 		super.draw(g);
 		
-		this.drawSensor(g, r1.sensorA);
-		this.drawSensor(g, r1.sensorB);
-		this.drawSensor(g, r1.sensorC);
-		this.drawSensor(g, r2.sensorA);
-		this.drawSensor(g, r2.sensorB);
-		this.drawSensor(g, r2.sensorC);
+		for (Sensor s : r1.getSensors())
+			this.drawSensor(g, s);
+		
+		for (Sensor s : r2.getSensors())
+			this.drawSensor(g, s);
 		
 		g.setColor(Color.black);
 		g.drawString("R1 sensorA= " + Math.round(r1.sensorA.getSensorValue() * 100) / 100f, 380, 40);
@@ -98,7 +97,6 @@ public class RoboSumoMatch extends Scene {
 	}
 	
 	protected void drawSensor(Graphics2D g, Sensor s) {
-		//this.drawBody(g, s.getSensorBody());
 		this.drawContact(g, s.getContactPoints()[0]);
 		this.drawContact(g, s.getContactPoints()[1]);
 	}

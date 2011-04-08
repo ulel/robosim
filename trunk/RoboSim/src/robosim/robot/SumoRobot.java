@@ -1,7 +1,7 @@
 package robosim.robot;
 
 import robosim.RoboSumoMatch;
-import robosim.robot.components.*;
+import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.*;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
@@ -28,13 +28,16 @@ public class SumoRobot extends Robot {
 		this.sensorA.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
+		this.addSensor(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
 		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorB.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
+		this.addSensor(this.sensorB);
 		
 		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
+		this.addSensor(this.sensorC);
 	}
 
 
