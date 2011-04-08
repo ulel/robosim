@@ -1,10 +1,11 @@
-package robosim.robot.components;
+package robosim.robot.components.actuators;
 
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
 import robosim.robot.Robot;
+import robosim.robot.components.RobotComponent;
 
 public class WheelMotor extends RobotComponent {
 	public static final long BODY_BITMASK = 0; //no collisions.
