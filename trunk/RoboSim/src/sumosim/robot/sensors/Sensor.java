@@ -1,5 +1,7 @@
 package sumosim.robot.sensors;
 
+import java.awt.geom.AffineTransform;
+
 import sumosim.robot.*;
 import net.phys2d.raw.*;
 import net.phys2d.raw.shapes.*;
@@ -74,7 +76,12 @@ public abstract class Sensor {
 			throw new IllegalArgumentException("Sensor x and y can't both be 0, (joint rotation issue)."); //TODO: fix the actual bug.
 		
 		this.removeSensorJoint();
-		this.sensorBody.setPosition(this.robot.getPosX() + x, this.robot.getPosY() + y);
+		AffineTransform t = new AffineTransform();
+		t.translate(this.robot.getPosX(), this.robot.getPosY());
+		t.rotate(this.robot.getRotation());
+		t.translate(x, y);
+		this.sensorBody.setPosition((float)t.getTranslateX(), (float)t.getTranslateY());
+		//this.sensorBody.setPosition(this.robot.getPosX() + x, this.robot.getPosY() + y);
 		this.addSensorJoint();
 	}
 	
