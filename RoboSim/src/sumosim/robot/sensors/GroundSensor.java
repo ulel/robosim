@@ -29,7 +29,7 @@ public class GroundSensor extends Sensor {
 	// Returns 1f if the sensor is no longer 'above' the dohyo's arena body. 0f otherwise.
 	@Override
 	protected float calcSensorValue() {
-		Body arenaBody = this.world.getBodyByName(SumoRobot.DOHYO_ARENA);
+		Body arenaBody = this.world.getBodies().getBodyByName(SumoRobot.DOHYO_ARENA);
 		if (arenaBody == null)
 			return 1f;
 		

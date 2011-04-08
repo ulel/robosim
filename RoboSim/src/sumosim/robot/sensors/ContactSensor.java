@@ -26,7 +26,7 @@ public class ContactSensor extends Sensor {
 		contactPoints[1] = new Contact();
 		
 		//Get all robot hulls.
-		BodyList bdList = this.world.getBodiesByName(Robot.ROBOT_HULL); 
+		BodyList bdList = this.world.getBodies().getBodiesByName(Robot.ROBOT_HULL); 
 		
 		int numBodies = bdList.size();
 		for (int i = 0; i < numBodies; i++) {

@@ -471,39 +471,4 @@ public strictfp class World extends CollisionSpace {
 		clearArbiters(body);
 		super.remove(body);
 	}
-	
-	
-	
-	
-	/**
-	 * Returns the first occurrance of a body with the supplied name.
-	 */
-	public Body getBodyByName(String name) {
-		int numBodies = this.bodies.size();
-		
-		for (int i = 0; i < numBodies; i++) {
-			Body bd = this.bodies.get(i);
-			
-			if (bd.getName() == name)
-				return bd;
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Returns a BodyList with all the bodies with the specified name.
-	 */
-	public BodyList getBodiesByName(String name) {
-		BodyList bdList = new BodyList();
-		
-		int numBodies = this.bodies.size();
-		for (int i = 0; i < numBodies; i++) {
-			Body bd = this.bodies.get(i);
-			if (bd.getName() == name)
-				bdList.add(bd);
-		}
-		
-		return bdList;
-	}
 }
