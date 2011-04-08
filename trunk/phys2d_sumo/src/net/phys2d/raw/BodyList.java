@@ -147,4 +147,38 @@ public class BodyList {
 		
 		return str;
 	}
+	
+	
+	
+	/**
+	 * Returns the first occurrance of a body with the supplied name.
+	 */
+	public Body getBodyByName(String name) {
+		int numBodies = this.size();
+		
+		for (int i = 0; i < numBodies; i++) {
+			Body bd = this.get(i);
+			
+			if (bd.getName() == name)
+				return bd;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Returns a BodyList with all the bodies with the specified name.
+	 */
+	public BodyList getBodiesByName(String name) {
+		BodyList bdList = new BodyList();
+		
+		int numBodies = this.size();
+		for (int i = 0; i < numBodies; i++) {
+			Body bd = this.get(i);
+			if (bd.getName() == name)
+				bdList.add(bd);
+		}
+		
+		return bdList;
+	}
 }
