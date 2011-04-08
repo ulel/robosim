@@ -31,23 +31,45 @@ public abstract class Sensor extends RobotComponent {
 	}
 	
 	
+	/**
+	 * Returns the bitmask used for this sensor.
+	 */
 	public long getBitmask() {
 		return this.bitmask;
 	}
+	
+	/**
+	 * Sets the bitmask used for this sensor.
+	 */
 	public void setBitmask(long m) {
 		this.bitmask = m;
 	}
+	
+	/**
+	 * Removes the provided bit(s) from the sensor's bitmask.
+	 */
 	public void removeBit(long m) {
 		this.bitmask -= m & this.bitmask;
 	}
+	
+	/**
+	 * Adds the provided bit(s) from the sensor's bitmask.
+	 * @param m
+	 */
 	public void addBit(long m) {
 		this.bitmask |= m;
 	}
 	
 	
+	/**
+	 * Returns a list of excluded bodies.
+	 */
 	public BodyList getExcludedBodies() {
 		return excludedBodies;
 	}
+	/**
+	 * Adds a body to be excluded from this sensor's detection.
+	 */
 	public void addExcludedBody(Body b) {
 		if (!this.excludedBodies.contains(b))
 			this.excludedBodies.add(b);
