@@ -28,6 +28,8 @@ public abstract class Sensor extends RobotComponent {
 		this.contactPoints = new Contact[] { new Contact(), new Contact() };
 		this.componentBody.setBitmask(BODY_BITMASK);
 		this.excludedBodies = new BodyList();
+		
+		this.addExcludedBody(r.getHull().getComponentBody());
 	}
 	
 	
