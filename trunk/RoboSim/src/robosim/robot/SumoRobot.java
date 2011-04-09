@@ -25,14 +25,12 @@ public class SumoRobot extends Robot {
 		
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.sensorA.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
 		this.addSensor(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
 		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.sensorB.addExcludedBody(this.getHull().getComponentBody());
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
 		this.addSensor(this.sensorB);
 		
@@ -76,13 +74,16 @@ public class SumoRobot extends Robot {
 		Body missileBody = new Body("missile", new Box(5, 20), 350);
 		missileBody.setPosition(this.getPosX(), this.getPosY());
 		missileBody.setRotation(this.getRotation());
-		
 		missileBody.addExcludedBody(this.getHull().getComponentBody());
 		missileBody.addExcludedBody(this.wheel_left.getComponentBody());
 		missileBody.addExcludedBody(this.wheel_right.getComponentBody());
 		world.add(missileBody);
 		
-		missileBody.addForce(new Vector2f(0, (int)Math.pow(10, 6.5)));
+		float r = this.getRotation();
+		float x = (float) (-Math.sin(r) * 2000000);
+		float y = (float) (Math.cos(r) * 2000000);
+		
+		missileBody.addForce(new Vector2f(x, y));
 		
 		this.missileFired = 0;
 	}
