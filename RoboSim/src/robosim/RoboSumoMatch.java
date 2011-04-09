@@ -12,6 +12,7 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.*;
 
+import robosim.robot.SumoBot;
 import robosim.robot.SumoRobot;
 import robosim.robot.components.sensors.Sensor;
 
@@ -20,8 +21,8 @@ public class RoboSumoMatch extends Scene {
 	public static final long DOHYO_ARENA_BITMASK = 2;
 	public static final String DOHYO_BORDER = "DohyoBorder";
 	
-	SumoRobot r1;
-	SumoRobot r2;
+	SumoBot r1;
+	SumoBot r2;
 	StaticBody border;
 	StaticBody arena;
 	
@@ -38,8 +39,8 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new SumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+		r1 = new SumoBot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+		r2 = new SumoBot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
 		world.add(arena);
@@ -61,20 +62,6 @@ public class RoboSumoMatch extends Scene {
 	protected void step() {
 		r1.step();
 		r2.step();
-		
-		//r1 controls
-		if (keys[KeyEvent.VK_LEFT]) r1.turnCounterClockwise();
-		if (keys[KeyEvent.VK_RIGHT]) r1.turnClockwise();
-		if (keys[KeyEvent.VK_UP]) r1.forward();
-		if (keys[KeyEvent.VK_DOWN]) r1.backward();
-		if (keys[KeyEvent.VK_ENTER]) r1.fireMissile();
-		
-		//r2 controls
-		if (keys[KeyEvent.VK_A]) r2.turnCounterClockwise();
-		if (keys[KeyEvent.VK_D]) r2.turnClockwise();
-		if (keys[KeyEvent.VK_W]) r2.forward();
-		if (keys[KeyEvent.VK_S]) r2.backward();
-		if (keys[KeyEvent.VK_SPACE]) r2.fireMissile();
 	}
 	
 	@Override
