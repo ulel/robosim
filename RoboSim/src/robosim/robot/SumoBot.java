@@ -33,11 +33,10 @@ public class SumoBot extends Robot {
 		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
 		
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
-		this.sensorA.setVRange(100);
 		
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.setHRange(20);
-		this.sensorA.setVRange(60);
+		this.sensorA.setVRange(200);
 		this.addSensor(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
