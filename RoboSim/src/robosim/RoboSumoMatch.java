@@ -12,6 +12,7 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.*;
 
+import robosim.robot.FindAndCharge;
 import robosim.robot.SumoBot;
 import robosim.robot.SumoRobot;
 import robosim.robot.components.sensors.Sensor;
@@ -21,8 +22,8 @@ public class RoboSumoMatch extends Scene {
 	public static final long DOHYO_ARENA_BITMASK = 2;
 	public static final String DOHYO_BORDER = "DohyoBorder";
 	
-	SumoBot r1;
-	SumoBot r2;
+	FindAndCharge r1;
+	FindAndCharge r2;
 	StaticBody border;
 	StaticBody arena;
 	
@@ -39,8 +40,8 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new SumoBot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-		r2 = new SumoBot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+		r1 = new FindAndCharge(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+		r2 = new FindAndCharge(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
 		world.add(arena);
@@ -75,12 +76,12 @@ public class RoboSumoMatch extends Scene {
 			this.drawSensor(g, s);
 		
 		g.setColor(Color.black);
-		g.drawString("R1 sensorA= " + Math.round(r1.sensorA.getSensorValue() * 100) / 100f, 380, 40);
-		g.drawString("R1 sensorB= " + r1.sensorB.getSensorValue(), 380, 60);
-		g.drawString("R1 sensorC= " + r1.sensorC.getSensorValue(), 380, 80);
-		g.drawString("R2 sensorA= " + Math.round(r2.sensorA.getSensorValue() * 100) / 100f, 380, 100);
-		g.drawString("R2 sensorB= " + r2.sensorB.getSensorValue(), 380, 120);
-		g.drawString("R2 sensorC= " + r2.sensorC.getSensorValue(), 380, 140);
+//		g.drawString("R1 sensorA= " + Math.round(r1.sensorA.getSensorValue() * 100) / 100f, 380, 40);
+//		g.drawString("R1 sensorB= " + r1.sensorB.getSensorValue(), 380, 60);
+//		g.drawString("R1 sensorC= " + r1.sensorC.getSensorValue(), 380, 80);
+//		g.drawString("R2 sensorA= " + Math.round(r2.sensorA.getSensorValue() * 100) / 100f, 380, 100);
+//		g.drawString("R2 sensorB= " + r2.sensorB.getSensorValue(), 380, 120);
+//		g.drawString("R2 sensorC= " + r2.sensorC.getSensorValue(), 380, 140);
 	}
 	
 	protected void drawSensor(Graphics2D g, Sensor s) {
