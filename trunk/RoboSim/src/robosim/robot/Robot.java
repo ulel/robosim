@@ -1,5 +1,6 @@
 package robosim.robot;
 
+import java.util.List;
 import java.util.LinkedList;
 
 import robosim.robot.components.RobotComponent;
@@ -49,7 +50,7 @@ public abstract class Robot {
 	/**
 	 * Returns a list of sensors of the robot.
 	 */
-	public LinkedList<RobotComponent> getComponents() {
+	public List<RobotComponent> getComponents() {
 		return this.components;
 	}
 	
