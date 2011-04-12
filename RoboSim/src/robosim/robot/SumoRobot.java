@@ -1,12 +1,22 @@
 package robosim.robot;
 
-import robosim.RoboSumoMatch;
-import robosim.robot.components.actuators.WheelMotor;
-import robosim.robot.components.sensors.*;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import robosim.RoboSumoMatch;
+import robosim.robot.components.actuators.WheelMotor;
+import robosim.robot.components.sensors.ContactSensor;
+import robosim.robot.components.sensors.GroundSensor;
+import robosim.robot.components.sensors.ProximitySensor;
+import robosim.robot.strategy.Event;
+import robosim.robot.strategy.Expression;
+import robosim.robot.strategy.State;
+import robosim.robot.strategy.Strategy;
+import robosim.robot.strategy.Transition;
+import robosim.robot.strategy.actions.Forward;
+import robosim.robot.strategy.actions.TurnClockwise;
+import robosim.robot.strategy.actions.TurnCounterClockwise;
 
 public class SumoRobot extends Robot {
 
@@ -17,6 +27,8 @@ public class SumoRobot extends Robot {
 	public ContactSensor sensorB;
 	public GroundSensor sensorC;
 	
+	private Strategy strategy;
+	
 	public SumoRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
 		
@@ -26,7 +38,7 @@ public class SumoRobot extends Robot {
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.setHRange(20);
-		this.sensorA.setVRange(60);
+		this.sensorA.setVRange(160);
 		this.addSensor(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
@@ -36,31 +48,72 @@ public class SumoRobot extends Robot {
 		
 		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.addSensor(this.sensorC);
+		
+		setupStrategy();
+	}
+
+	private void setupStrategy() {
+		final Event foundEnemyEvent = new Event("foundEnemy", new Expression() {
+			@Override
+			public boolean evaluate() {
+				return sensorA.getSensorValue() > 0;
+			}
+		});
+		
+		final Event lostEnemyEvent = new Event("lostEnemy", new Expression() {
+			@Override
+			public boolean evaluate() {
+				return sensorA.getSensorValue() == 0;
+			}
+		});
+		
+		final Event alwaysTrueEvent = new Event("true", new Expression() {
+			@Override
+			public boolean evaluate() {
+				return true;
+			}
+		});
+		
+		strategy = new Strategy() {
+			@Override
+			public void initStrategy() {
+				State idleState = new State("idle");
+				State findState = new State("find");
+				State attackState = new State("attack");
+
+				idleState.addTransition(new Transition("start", 0, alwaysTrueEvent, new TurnClockwise(1), findState));
+				findState.addTransition(new Transition("findToAttack", 0, foundEnemyEvent, new Forward(1), attackState));
+				attackState.addTransition(new Transition("attackToFind", 0, lostEnemyEvent, new TurnCounterClockwise(1), findState));				
+
+				currentState = idleState;
+			}
+		};
 	}
 
 
-	
-	private float fwd_force = 150;
-	private float turn_force = 100;
+
+	private final float MAX_FORCE = 100;
+	private float currentForceLeft = 0;
+	private float currentForceRight = 0;
 	
 	public void forward() {
-		wheel_left.setPower(fwd_force);
-		wheel_right.setPower(fwd_force);
+		currentForceLeft = MAX_FORCE;
+		currentForceRight = MAX_FORCE;
 	}
 	
 	public void backward() {
-		wheel_left.setPower(-fwd_force);
-		wheel_right.setPower(-fwd_force);
+		currentForceLeft = -MAX_FORCE;
+		currentForceRight = -MAX_FORCE;
 	}
 	
 	public void turnClockwise() {
-		wheel_left.setPower(-turn_force);
-		wheel_right.setPower(turn_force);
+		currentForceLeft = -MAX_FORCE * 0.5f;
+		currentForceRight = MAX_FORCE * 0.5f;
 	}
 	
 	public void turnCounterClockwise() {
-		wheel_left.setPower(turn_force);
-		wheel_right.setPower(-turn_force);
+		currentForceLeft = MAX_FORCE;
+		currentForceRight = -MAX_FORCE;
 	}
 	
 	private int missileFired = 61;
@@ -86,5 +139,13 @@ public class SumoRobot extends Robot {
 		missileBody.addForce(new Vector2f(x, y));
 		
 		this.missileFired = 0;
+	}
+
+	@Override
+	public void performBehavior() {
+		strategy.step(this);
+		
+		wheel_left.setPower(currentForceLeft);
+		wheel_right.setPower(currentForceRight);
 	}
 }

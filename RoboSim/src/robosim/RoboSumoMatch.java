@@ -2,18 +2,14 @@ package robosim;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-
 
 import net.phys2d.raw.Body;
 import net.phys2d.raw.Collide;
 import net.phys2d.raw.Contact;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.*;
-
-import robosim.robot.FindAndCharge;
-import robosim.robot.SumoBot;
+import net.phys2d.raw.shapes.Circle;
+import robosim.robot.Robot;
 import robosim.robot.SumoRobot;
 import robosim.robot.components.sensors.Sensor;
 
@@ -22,8 +18,8 @@ public class RoboSumoMatch extends Scene {
 	public static final long DOHYO_ARENA_BITMASK = 2;
 	public static final String DOHYO_BORDER = "DohyoBorder";
 	
-	FindAndCharge r1;
-	FindAndCharge r2;
+	Robot r1;
+	Robot r2;
 	StaticBody border;
 	StaticBody arena;
 	
@@ -40,8 +36,8 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new FindAndCharge(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-		r2 = new FindAndCharge(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+		r1 = new SumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
 		world.add(arena);
