@@ -1,9 +1,7 @@
 package robosim.robot.components.sensors;
 
-import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
-import robosim.robot.Robot;
 
 /**
  * The GroundSensor is a sensor that checks for collisions with the arena floor.
@@ -13,8 +11,8 @@ import robosim.robot.Robot;
  */
 public class GroundSensor extends ContactSensor {
 
-	public GroundSensor(World w, Robot r, float posX, float posY, float rotation, long groundBitmask) {
-		super(w, r, posX, posY, rotation);
+	public GroundSensor(long groundBitmask) {
+		super();
 		this.setBitmask(groundBitmask);
 	}
 	

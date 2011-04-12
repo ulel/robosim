@@ -5,11 +5,9 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.BodyList;
 import net.phys2d.raw.Collide;
 import net.phys2d.raw.Contact;
-import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.ConvexPolygon;
 import net.phys2d.raw.shapes.DynamicShape;
 import net.phys2d.raw.shapes.Shape;
-import robosim.robot.Robot;
 
 /**
  * Sensor that can be used to detect nearby robots. Use hRange and vRange to set the sensor's scope. 
@@ -18,11 +16,11 @@ import robosim.robot.Robot;
  * @author Pier
  */
 public class ProximitySensor extends Sensor {
-	protected float hRange = 4f;
-	protected float vRange = 4f;
+	protected float hRange = 20f;
+	protected float vRange = 60f;
 	
-	public ProximitySensor(World w, Robot r, float posX, float posY, float rotation) {
-		super(w, r, posX, posY, rotation);
+	public ProximitySensor() {
+		super();
 	}
 
 	

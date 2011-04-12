@@ -19,8 +19,8 @@ public abstract class Robot {
 		this.world = w;
 		this.components = new LinkedList<RobotComponent>();
 		
-		this.hull = new RobotHull(w, this, posX, posY, rotation, mass);
-		this.addComponent(this.hull);
+		this.hull = new RobotHull(mass);
+		this.addComponent(this.hull, posX, posY, rotation);
 	}
 
 	/**
@@ -56,9 +56,11 @@ public abstract class Robot {
 	/**
 	 * Adds a sensor to the robot.
 	 */
-	public void addComponent(RobotComponent c) {
+	public void addComponent(RobotComponent c, float posX, float posY, float rotation) {
 		if (!this.components.contains(c))
 			this.components.add(c);
+		
+		c.addToRobot(this.world, this, this.hull, posX, posY, rotation);
 	}
 	
 	/**
@@ -66,6 +68,8 @@ public abstract class Robot {
 	 */
 	public void removeComponent(RobotComponent c) {
 		this.components.remove(c);
+		
+		c.removeFromRobot();
 	}
 	
 	
