@@ -21,13 +21,19 @@ public abstract class Sensor extends RobotComponent {
 	private long bitmask = Long.MAX_VALUE; // All bits set.
 	private BodyList excludedBodies;
 	
-	public Sensor(World w, Robot r, float posX, float posY, float rotation) {
-		super(w, r, posX, posY, rotation, SENSOR_WEIGHT);
+	public Sensor() {
+		super(SENSOR_WEIGHT);
 		
 		this.sensorValue = 0f;
 		this.contactPoints = new Contact[] { new Contact(), new Contact() };
 		this.componentBody.setBitmask(BODY_BITMASK);
 		this.excludedBodies = new BodyList();
+	}
+	
+	@Override
+	public void addToRobot(World w, Robot r, RobotComponent joinToComponent, float posX, float posY, float rotation) {
+		// TODO Auto-generated method stub
+		super.addToRobot(w, r, joinToComponent, posX, posY, rotation);
 		
 		this.addExcludedBody(r.getHull().getComponentBody());
 	}

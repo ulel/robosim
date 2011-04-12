@@ -21,22 +21,12 @@ public abstract class RobotComponent {
 	protected Body componentBody;
 	protected Joint robotJoint;
 	protected AffineTransform transform;
-	private float localX;
-	private float localY;
-	private float rotation;
+	protected float localX;
+	protected float localY;
+	protected float rotation;
 	
-	public RobotComponent(World w, Robot r, float posX, float posY, float rotation, float mass) {
-		this.world = w;
-		this.robot = r;
-		this.localX = posX;
-		this.localY = posY;
-		this.rotation = rotation;
+	public RobotComponent(float mass) {
 		this.componentBody = new Body(this.createDefaultComponentShape(), mass);
-		
-		this.setTransform(posX, posY, rotation);
-		this.createRobotJoint();
-		
-		world.add(this.componentBody);
 	}
 	
 	/**
@@ -48,14 +38,41 @@ public abstract class RobotComponent {
 	
 	
 	/**
-	 * Creates a FixedJoint between the component and the robot's hull.
+	 * Called when adding the component to the robot. Sets up the transform and joint.
 	 */
-	protected void createRobotJoint() {
-		this.robotJoint = new FixedJoint(this.componentBody, this.robot.getHull().getComponentBody());
-		this.world.add(this.robotJoint);
+	public void addToRobot(World w, Robot r, RobotComponent joinToComponent, float posX, float posY, float rotation) {
+		this.world = w;
+		this.robot = r;
+		
+		this.setTransform(posX, posY, rotation);
+		
+		this.robotJoint = this.createRobotJoint(joinToComponent);
+		if (this.robotJoint != null)
+			this.world.add(this.robotJoint);
+		
+		this.world.add(this.componentBody);
+	}
+	
+	public void removeFromRobot() {
+		if (this.robotJoint != null)
+			this.world.remove(this.robotJoint);
+		
+		this.world.remove(this.componentBody);
+	}
+	
+	/**
+	 * Returns a Joint between the component's body and the robot's component to join to.
+	 * If the component should not be joined, return null. 
+	 */
+	protected Joint createRobotJoint(RobotComponent joinToComponent) {
+		return new FixedJoint(this.componentBody, this.robot.getHull().getComponentBody());
 	}
 	
 	protected void setTransform(float posX, float posY, float rotation) {
+		this.localX = posX;
+		this.localY = posY;
+		this.rotation = rotation;
+		
 		this.transform = new AffineTransform();
 		this.transform.translate(this.robot.getPosX(), this.robot.getPosY());
 		this.transform.rotate(this.robot.getRotation());

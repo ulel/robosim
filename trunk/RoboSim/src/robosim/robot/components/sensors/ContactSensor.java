@@ -4,8 +4,6 @@ import net.phys2d.raw.Body;
 import net.phys2d.raw.BodyList;
 import net.phys2d.raw.Collide;
 import net.phys2d.raw.Contact;
-import net.phys2d.raw.World;
-import robosim.robot.Robot;
 
 /**
  * Sensor that gives an on/off value to indicate whether it is colliding with another robot.
@@ -15,8 +13,8 @@ import robosim.robot.Robot;
  */
 public class ContactSensor extends Sensor {
 
-	public ContactSensor(World w, Robot r, float posX, float posY, float rotation) {
-		super(w, r, posX, posY, rotation);
+	public ContactSensor() {
+		super();
 	}
 
 	@Override

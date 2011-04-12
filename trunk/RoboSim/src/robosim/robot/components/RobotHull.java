@@ -2,9 +2,7 @@ package robosim.robot.components;
 
 import java.awt.geom.AffineTransform;
 
-import robosim.robot.Robot;
-
-import net.phys2d.raw.World;
+import net.phys2d.raw.Joint;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
 
@@ -15,8 +13,8 @@ import net.phys2d.raw.shapes.DynamicShape;
 public class RobotHull extends RobotComponent {
 	public static final long BODY_BITMASK = 5; //Set bit 1 and 4, in case some body wants to collide with the hull, but not with the standard bodies. 
 	
-	public RobotHull(World w, Robot r, float posX, float posY, float rotation, float mass) {
-		super(w, r, posX, posY, rotation, mass);
+	public RobotHull(float mass) {
+		super(mass);
 		this.componentBody.setBitmask(BODY_BITMASK);
 		this.componentBody.setFriction(0.2f);
 	}
@@ -27,12 +25,17 @@ public class RobotHull extends RobotComponent {
 	}
 	
 	@Override
-	protected void createRobotJoint() {
+	protected Joint createRobotJoint(RobotComponent joinToComponent) {
 		// Don't create a joint for robot's hull itself.
+		return null;
 	}
 	
 	@Override
 	protected void setTransform(float posX, float posY, float rotation) {
+		this.localX = posX;
+		this.localY = posY;
+		this.rotation = rotation;
+		
 		this.transform = new AffineTransform();
 		this.transform.translate(posX, posY);
 		this.transform.rotate(rotation);

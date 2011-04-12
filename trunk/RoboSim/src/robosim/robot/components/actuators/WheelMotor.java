@@ -1,10 +1,8 @@
 package robosim.robot.components.actuators;
 
 import net.phys2d.math.Vector2f;
-import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
-import robosim.robot.Robot;
 import robosim.robot.components.RobotComponent;
 
 public class WheelMotor extends RobotComponent {
@@ -13,15 +11,15 @@ public class WheelMotor extends RobotComponent {
 	private float power;
 	private Vector2f motorForce;
 	
-	public WheelMotor(World w, Robot r, float posX, float posY, float rotation, float mass, float maxPower) {
-		super(w, r, posX, posY, rotation, mass);
-		
-		this.componentBody.setBitmask(BODY_BITMASK);
-		this.componentBody.setDamping(0.1f);
+	public WheelMotor(float mass, float maxPower) {
+		super(mass);
 		
 		this.maxPower = maxPower;
 		this.power = 0f;
 		this.motorForce = new Vector2f();
+		
+		this.componentBody.setBitmask(BODY_BITMASK);
+		this.componentBody.setDamping(0.1f);
 	}
 	
 	@Override

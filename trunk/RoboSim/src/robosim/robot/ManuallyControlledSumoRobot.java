@@ -40,24 +40,24 @@ public class ManuallyControlledSumoRobot extends Robot {
 			}
 		});
 		
-		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f, fwd_force);
-		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f, fwd_force);
-		this.addComponent(this.wheel_left);
-		this.addComponent(this.wheel_right);
+		this.wheel_left = new WheelMotor(1f, fwd_force);
+		this.wheel_right = new WheelMotor(1f, fwd_force);
+		this.addComponent(this.wheel_left, -10, 0, 0);
+		this.addComponent(this.wheel_right, 10, 0, 0);
 		
-		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
+		this.sensorA = new ProximitySensor();
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(60);
-		this.addComponent(this.sensorA);
+		this.addComponent(this.sensorA, 0, 10, 0);
 		
-		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
+		this.sensorB = new ContactSensor();
 		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
-		this.addComponent(this.sensorB);
+		this.addComponent(this.sensorB, 0, -16, (float)Math.PI);
 		
-		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.addComponent(this.sensorC);
+		this.sensorC = new GroundSensor(RoboSumoMatch.DOHYO_ARENA_BITMASK);
+		this.addComponent(this.sensorC, 0, 0, 0);
 	}
 
 
