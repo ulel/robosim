@@ -117,6 +117,13 @@ public abstract class RobotComponent {
 	
 	
 	
+	/**
+	 * Update function called at every simulation step (by the Robot it is added to).
+	 * Override to add component specific updates.
+	 */
+	public void update() { }
+	
+	
 	/*
 	 * Setting the position and rotation after the component has been initialized is not supported (yet?).
 	 * This is because it is a little tricky to implement when it comes to joints.

@@ -9,8 +9,8 @@ import net.phys2d.raw.Contact;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Circle;
-import robosim.robot.Robot;
-import robosim.robot.SumoRobot;
+import robosim.robot.*;
+import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
 
 public class RoboSumoMatch extends Scene {
@@ -36,7 +36,7 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new SumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10, frame);
 		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
@@ -65,13 +65,18 @@ public class RoboSumoMatch extends Scene {
 	protected void draw(Graphics2D g) {
 		super.draw(g);
 		
-		for (Sensor s : r1.getSensors())
-			this.drawSensor(g, s);
+		for (RobotComponent c : r1.getComponents()) {
+			if (c instanceof Sensor) {
+				this.drawSensor(g, (Sensor)c);
+			}
+		}
+		for (RobotComponent c : r2.getComponents()) {
+			if (c instanceof Sensor) {
+				this.drawSensor(g, (Sensor)c);
+			}
+		}
 		
-		for (Sensor s : r2.getSensors())
-			this.drawSensor(g, s);
-		
-		g.setColor(Color.black);
+//		g.setColor(Color.black);
 //		g.drawString("R1 sensorA= " + Math.round(r1.sensorA.getSensorValue() * 100) / 100f, 380, 40);
 //		g.drawString("R1 sensorB= " + r1.sensorB.getSensorValue(), 380, 60);
 //		g.drawString("R1 sensorC= " + r1.sensorC.getSensorValue(), 380, 80);

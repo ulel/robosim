@@ -1,9 +1,9 @@
 package robosim.robot;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
+import robosim.robot.components.RobotComponent;
 import robosim.robot.components.RobotHull;
-import robosim.robot.components.sensors.Sensor;
 import net.phys2d.raw.World;
 
 /**
@@ -13,12 +13,14 @@ public abstract class Robot {
 
 	protected World world;
 	private RobotHull hull;
-	private ArrayList<Sensor> sensors;
+	private LinkedList<RobotComponent> components;
 	
 	public Robot(World w, float posX, float posY, float rotation, float mass) {
 		this.world = w;
+		this.components = new LinkedList<RobotComponent>();
+		
 		this.hull = new RobotHull(w, this, posX, posY, rotation, mass);
-		this.sensors = new ArrayList<Sensor>();
+		this.addComponent(this.hull);
 	}
 
 	/**
@@ -47,24 +49,23 @@ public abstract class Robot {
 	/**
 	 * Returns a list of sensors of the robot.
 	 */
-	public ArrayList<Sensor> getSensors() {
-		return this.sensors;
+	public LinkedList<RobotComponent> getComponents() {
+		return this.components;
 	}
 	
 	/**
 	 * Adds a sensor to the robot.
 	 */
-	public void addSensor(Sensor s) {
-		if (!this.sensors.contains(s))
-			this.sensors.add(s);
+	public void addComponent(RobotComponent c) {
+		if (!this.components.contains(c))
+			this.components.add(c);
 	}
 	
 	/**
-	 * Removes a sensor from the robot.
+	 * Removes a component from the robot.
 	 */
-	public void removeSensor(Sensor s) {
-		if (this.sensors.contains(s))
-			this.sensors.remove(s);
+	public void removeComponent(RobotComponent c) {
+		this.components.remove(c);
 	}
 	
 	
@@ -72,10 +73,8 @@ public abstract class Robot {
 	 * Updates the robot for each simulation step.
 	 */
 	public void step() {
-		int numSensors = this.sensors.size();
-		for (int i = 0; i < numSensors; i++) {
-			this.sensors.get(i).update();
-		}
+		for (RobotComponent c : this.components)
+			c.update();
 		
 		this.performBehavior();
 	}

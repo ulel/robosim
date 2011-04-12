@@ -32,20 +32,22 @@ public class FindAndCharge extends Robot {
 	public FindAndCharge(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
 		
-		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f);
-		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
+		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f, MAX_FWD_FORCE);
+		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f, MAX_FWD_FORCE);
+		this.addComponent(this.wheel_left);
+		this.addComponent(this.wheel_right);
 		
 		this.frontSensor = new ProximitySensor(w, this, 0.0f, 10.0f, 0.0f);
 		this.frontSensor.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.frontSensor.setHRange(20.0f);
 		this.frontSensor.setVRange(200.0f);
-		this.addSensor(this.frontSensor);
+		this.addComponent(this.frontSensor);
 		this.groundSensor = new GroundSensor(w, this, 0.0f, 0.0f, 0.0f, RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.addSensor(this.groundSensor);
+		this.addComponent(this.groundSensor);
 		this.contactSensor = new ContactSensor(w, this, 0.0f, -16.0f, 0.0f);
 		this.contactSensor.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.contactSensor.setComponentShape(new Box(15.0f, 2.5f));
-		this.addSensor(this.contactSensor);
+		this.addComponent(this.contactSensor);
 	}
 
 	@Override

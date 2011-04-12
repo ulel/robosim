@@ -29,23 +29,25 @@ public class SumoBot extends Robot {
 	public SumoBot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
 		
-		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f);
-		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
+		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f, MAX_FWD_FORCE);
+		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f, MAX_FWD_FORCE);
+		this.addComponent(this.wheel_left);
+		this.addComponent(this.wheel_right);
 		
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
 		
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(200);
-		this.addSensor(this.sensorA);
+		this.addComponent(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
 		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
-		this.addSensor(this.sensorB);
+		this.addComponent(this.sensorB);
 		
 		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.addSensor(this.sensorC);
+		this.addComponent(this.sensorC);
 	}
 
 	@Override
