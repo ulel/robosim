@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import robosim.robot.MazeRobot;
+import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
-import net.phys2d.raw.shapes.Circle;
 
 public class Maze extends Scene {
 
@@ -98,9 +98,11 @@ public class Maze extends Scene {
 	protected void draw(Graphics2D g) {
 		super.draw(g);
 		
-		for (Sensor s : r.getSensors()) {
-			this.drawContact(g, s.getContactPoints()[0]);
-			this.drawContact(g, s.getContactPoints()[1]);
+		for (RobotComponent c : r.getComponents()) {
+			if (c instanceof Sensor) {
+				this.drawContact(g, ((Sensor)c).getContactPoints()[0]);
+				this.drawContact(g, ((Sensor)c).getContactPoints()[1]);
+			}
 		}
 		
 		g.setColor(Color.black);

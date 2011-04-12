@@ -16,15 +16,15 @@ public class MazeRobot extends Robot {
 	public MazeRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
 		
-		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f);
-		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
+		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f, fwd_power);
+		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f, fwd_power);
 		
 		this.sensorFront1 = new ContactSensor(w, this, 8, 13, (float)Math.PI / 3);
 		this.sensorFront1.setComponentShape(new Box(5, 10));
-		this.addSensor(this.sensorFront1);
+		this.addComponent(this.sensorFront1);
 		this.sensorFront2 = new ContactSensor(w, this, -8, 13, (float)-Math.PI / 3);
 		this.sensorFront2.setComponentShape(new Box(5, 10));
-		this.addSensor(this.sensorFront2);
+		this.addComponent(this.sensorFront2);
 		
 		this.getHull().setComponentShape(new Circle(15));
 	}

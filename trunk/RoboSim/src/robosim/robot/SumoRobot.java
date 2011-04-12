@@ -32,22 +32,24 @@ public class SumoRobot extends Robot {
 	public SumoRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
 		
-		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f);
-		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f);
+		this.wheel_left = new WheelMotor(w, this, -10, 0, 0, 1f, MAX_FORCE);
+		this.wheel_right = new WheelMotor(w, this, 10, 0, 0, 1f, MAX_FORCE);
+		this.addComponent(this.wheel_left);
+		this.addComponent(this.wheel_right);
 		
 		this.sensorA = new ProximitySensor(w, this, 0, 10, 0);
 		this.sensorA.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorA.setHRange(20);
 		this.sensorA.setVRange(160);
-		this.addSensor(this.sensorA);
+		this.addComponent(this.sensorA);
 		
 		this.sensorB = new ContactSensor(w, this, 0, -16, (float)Math.PI);
 		this.sensorB.removeBit(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.sensorB.setComponentShape(new Box(15, 2.5f));
-		this.addSensor(this.sensorB);
+		this.addComponent(this.sensorB);
 		
 		this.sensorC = new GroundSensor(w, this, 0, 0, 0, RoboSumoMatch.DOHYO_ARENA_BITMASK);
-		this.addSensor(this.sensorC);
+		this.addComponent(this.sensorC);
 		
 		setupStrategy();
 	}
@@ -93,27 +95,25 @@ public class SumoRobot extends Robot {
 
 
 	private final float MAX_FORCE = 100;
-	private float currentForceLeft = 0;
-	private float currentForceRight = 0;
 	
 	public void forward() {
-		currentForceLeft = MAX_FORCE;
-		currentForceRight = MAX_FORCE;
+		this.wheel_left.setPower(MAX_FORCE);
+		this.wheel_right.setPower(MAX_FORCE);
 	}
 	
 	public void backward() {
-		currentForceLeft = -MAX_FORCE;
-		currentForceRight = -MAX_FORCE;
+		this.wheel_left.setPower(-MAX_FORCE);
+		this.wheel_right.setPower(-MAX_FORCE);
 	}
 	
 	public void turnClockwise() {
-		currentForceLeft = -MAX_FORCE * 0.5f;
-		currentForceRight = MAX_FORCE * 0.5f;
+		this.wheel_left.setPower(-MAX_FORCE * 0.5f);
+		this.wheel_right.setPower(MAX_FORCE * 0.5f);
 	}
 	
 	public void turnCounterClockwise() {
-		currentForceLeft = MAX_FORCE;
-		currentForceRight = -MAX_FORCE;
+		this.wheel_left.setPower(MAX_FORCE * 0.5f);
+		this.wheel_right.setPower(-MAX_FORCE * 0.5f);
 	}
 	
 	private int missileFired = 61;
@@ -144,8 +144,5 @@ public class SumoRobot extends Robot {
 	@Override
 	public void performBehavior() {
 		strategy.step(this);
-		
-		wheel_left.setPower(currentForceLeft);
-		wheel_right.setPower(currentForceRight);
 	}
 }
