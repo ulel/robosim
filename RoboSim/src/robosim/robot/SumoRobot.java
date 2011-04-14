@@ -83,9 +83,9 @@ public class SumoRobot extends Robot {
 				State findState = new State("find");
 				State attackState = new State("attack");
 
-				idleState.addTransition(new Transition("start", 0, alwaysTrueEvent, new TurnClockwise(1), findState));
-				findState.addTransition(new Transition("findToAttack", 0, foundEnemyEvent, new Forward(1), attackState));
-				attackState.addTransition(new Transition("attackToFind", 0, lostEnemyEvent, new TurnCounterClockwise(1), findState));				
+				idleState.addTransition(new Transition("start", alwaysTrueEvent, new TurnClockwise(1), findState));
+				findState.addTransition(new Transition("findToAttack", foundEnemyEvent, new Forward(1), attackState));
+				attackState.addTransition(new Transition("attackToFind", lostEnemyEvent, new TurnCounterClockwise(1), findState));				
 
 				currentState = idleState;
 			}
