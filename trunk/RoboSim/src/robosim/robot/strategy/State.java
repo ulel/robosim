@@ -1,18 +1,12 @@
 package robosim.robot.strategy;
 
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class State {
 	
 	private String name;
-	SortedSet<Transition> transitions = new TreeSet<Transition>(new Comparator<Transition>() {
-		@Override
-		public int compare(Transition t1, Transition t2) {
-			return t1.priority - t2.priority;
-		}
-	});
+	protected List<Transition> transitions = new LinkedList<Transition>();
 	
 	public State(String name) {
 		this.name = name;
