@@ -1,22 +1,28 @@
 package robosim;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
-import robosim.robot.MazeRobot;
+import robosim.robot.*;
 import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
+import net.phys2d.raw.Collide;
+import net.phys2d.raw.Contact;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
+import net.phys2d.raw.shapes.Circle;
 
 public class Maze extends Scene {
 
-	private MazeRobot r;
+	private Robot r;
+	private StaticBody goal;
+	
+	private long start;
+	private long best_time = Long.MAX_VALUE;
+	private long current_time = 0;
 	
 	public Maze(String title) {
 		super(title);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -26,8 +32,9 @@ public class Maze extends Scene {
 		this.createBorder();
 		this.createMaze();
 		
-		this.r = new MazeRobot(world, 50, 50, 0, 10);
+		this.r = new MazeRobot2(world, 75, 75, (float)(Math.random() * Math.PI * 2), 10);
 		
+		start = System.currentTimeMillis() / 1000;
 	}
 
 	private void createBorder() {
@@ -86,6 +93,26 @@ public class Maze extends Scene {
 		w.setPosition(360, 345);
 		w.setRotation((float)Math.PI / 2);
 		world.add(w);
+		
+
+		this.goal = new StaticBody("Goal", new Circle(15));
+		this.goal.setBitmask(0);
+		this.goal.setPosition(300, 100);
+		world.add(this.goal);
+	}
+	
+	@Override
+	protected void update() {
+		super.update();
+		
+		current_time = (System.currentTimeMillis() / 1000) - start;
+		
+		if (Collide.collide(new Contact[] { new Contact(), new Contact() }, r.getHull().getComponentBody(), this.goal, 0f) > 0)
+		{
+			needsReset = true;
+			if (current_time < best_time)
+				best_time = current_time;
+		}
 	}
 	
 	@Override
@@ -98,16 +125,22 @@ public class Maze extends Scene {
 	protected void draw(Graphics2D g) {
 		super.draw(g);
 		
+		int i = 0;
 		for (RobotComponent c : r.getComponents()) {
 			if (c instanceof Sensor) {
+				i++;
 				this.drawContact(g, ((Sensor)c).getContactPoints()[0]);
 				this.drawContact(g, ((Sensor)c).getContactPoints()[1]);
+				
+				g.drawString(i + ". " + c.toString(), 350, 15 * (i + 2));
 			}
 		}
 		
-		g.setColor(Color.black);
-		g.drawString("S Front1= " + r.sensorFront1.getSensorValue(), 380, 40);
-		g.drawString("S Front2= " + r.sensorFront2.getSensorValue(), 380, 60);
+	    if (best_time != Long.MAX_VALUE)
+	    	g.drawString("Best: " + this.best_time + "s", 410, 485);
+	    
+	    g.drawString("Current: " + current_time + "s", 410, 500);
+
 	}
 	
 	

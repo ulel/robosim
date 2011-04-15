@@ -42,6 +42,7 @@
 package robosim;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -214,18 +215,19 @@ public abstract class Scene {
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			g.setColor(Color.white);
 			g.fillRect(0,0,500,520);
+			g.setFont(new Font(Font.SANS_SERIF, 0, 11));
 			
 			draw(g);
 			renderGUI(g);
 			g.setColor(Color.black);
-			g.drawString("FAv: "+frameAverage,10,50);
-			g.drawString("FPS: "+(int) (1000 / frameAverage),10,70);
-			g.drawString("Yield: "+yield,10,90);
-			g.drawString("Arbiters: "+world.getArbiters().size(),10,110);
-			g.drawString("Bodies: "+world.getBodies().size(),10,130);
-			g.drawString("R: "+renderTime,10,150);
-			g.drawString("L: "+logicTime,10,170);
-			g.drawString("Energy: "+world.getTotalEnergy(),10,190);
+			g.drawString("FAvg: "+frameAverage,10,50);
+			g.drawString("FPS: "+(int) (1000 / frameAverage),10,65);
+			g.drawString("Yield: "+yield,10,80);
+			g.drawString("Arbiters: "+world.getArbiters().size(),10,95);
+			g.drawString("Bodies: "+world.getBodies().size(),10,110);
+			g.drawString("Render t: "+renderTime,10,125);
+			g.drawString("Logic t: "+logicTime,10,140);
+			g.drawString("Energy: "+world.getTotalEnergy(),10,155);
 			g.dispose();
 			strategy.show();
 			renderTime = System.currentTimeMillis() - beforeRender;
@@ -271,7 +273,7 @@ public abstract class Scene {
 	 */
 	protected void renderGUI(Graphics2D g) {
 		g.setColor(Color.black);
-		g.drawString("R - Restart Demo",15,500);
+		g.drawString("R - Restart",15,500);
 	}
 	
 	protected void drawBackground(Graphics2D g) {
