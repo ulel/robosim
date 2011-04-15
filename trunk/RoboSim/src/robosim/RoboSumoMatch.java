@@ -64,25 +64,21 @@ public class RoboSumoMatch extends Scene {
 	@Override
 	protected void draw(Graphics2D g) {
 		super.draw(g);
-		
+		int i = 0;
 		for (RobotComponent c : r1.getComponents()) {
 			if (c instanceof Sensor) {
+				i++;
+				g.drawString(i + ". " + c.toString(), 350, 15 * (i + 2));
 				this.drawSensor(g, (Sensor)c);
 			}
 		}
 		for (RobotComponent c : r2.getComponents()) {
 			if (c instanceof Sensor) {
+				i++;
+				g.drawString(i + ". " + c.toString(), 350, 15 * (i + 2));
 				this.drawSensor(g, (Sensor)c);
 			}
 		}
-		
-//		g.setColor(Color.black);
-//		g.drawString("R1 sensorA= " + Math.round(r1.sensorA.getSensorValue() * 100) / 100f, 380, 40);
-//		g.drawString("R1 sensorB= " + r1.sensorB.getSensorValue(), 380, 60);
-//		g.drawString("R1 sensorC= " + r1.sensorC.getSensorValue(), 380, 80);
-//		g.drawString("R2 sensorA= " + Math.round(r2.sensorA.getSensorValue() * 100) / 100f, 380, 100);
-//		g.drawString("R2 sensorB= " + r2.sensorB.getSensorValue(), 380, 120);
-//		g.drawString("R2 sensorC= " + r2.sensorC.getSensorValue(), 380, 140);
 	}
 	
 	protected void drawSensor(Graphics2D g, Sensor s) {

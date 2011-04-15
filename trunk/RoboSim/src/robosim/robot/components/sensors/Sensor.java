@@ -108,5 +108,16 @@ public abstract class Sensor extends RobotComponent {
 	public void update() {
 		this.sensorValue = this.calcSensorValue();
 	}
+	
+	
+	
+	@Override
+	public String toString() {
+		String name = this.getClass().getName();
+		if (name.lastIndexOf('.') > 0)
+		    name = name.substring(name.lastIndexOf('.') + 1);
+
+		return name + "<" + Math.round(this.getSensorValue() * 100f) / 100f + ">";
+	}
 
 }
