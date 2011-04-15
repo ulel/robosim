@@ -7,6 +7,7 @@ import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.ContactSensor;
 import robosim.robot.components.sensors.GroundSensor;
 import robosim.robot.components.sensors.ProximitySensor;
+import robosim.robot.components.weapons.MissileLauncher;
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.World;
@@ -20,6 +21,9 @@ public class ManuallyControlledSumoRobot extends Robot {
 	public ProximitySensor sensorA;
 	public ContactSensor sensorB;
 	public GroundSensor sensorC;
+	
+	public MissileLauncher missileLauncher_left;
+	public MissileLauncher missileLauncher_right;
 	
 	public ManuallyControlledSumoRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
@@ -42,6 +46,11 @@ public class ManuallyControlledSumoRobot extends Robot {
 		
 		this.sensorC = new GroundSensor(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.addComponent(this.sensorC, 0, 0, 0);
+		
+		this.missileLauncher_left = new MissileLauncher(0.0001f, MissileLauncher.MISSILE_MASS, MissileLauncher.MISSILE_FORCE);
+		this.addComponent(this.missileLauncher_left, 21, 0, 0);
+		this.missileLauncher_right = new MissileLauncher(0.0001f, MissileLauncher.MISSILE_MASS, MissileLauncher.MISSILE_FORCE);
+		this.addComponent(this.missileLauncher_right, -21, 0, 0);
 	}
 
 
@@ -81,19 +90,8 @@ public class ManuallyControlledSumoRobot extends Robot {
 			return;
 		}
 		
-		Body missileBody = new Body("missile", new Box(5, 20), 350);
-		missileBody.setPosition(this.getPosX(), this.getPosY());
-		missileBody.setRotation(this.getRotation());
-		missileBody.addExcludedBody(this.getHull().getComponentBody());
-		missileBody.addExcludedBody(this.wheel_left.getComponentBody());
-		missileBody.addExcludedBody(this.wheel_right.getComponentBody());
-		world.add(missileBody);
-		
-		float r = this.getRotation();
-		float x = (float) (-Math.sin(r) * 2000000);
-		float y = (float) (Math.cos(r) * 2000000);
-		
-		missileBody.addForce(new Vector2f(x, y));
+		this.missileLauncher_left.fire();
+		this.missileLauncher_right.fire();
 		
 		this.missileFired = 0;
 	}
