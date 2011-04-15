@@ -34,8 +34,8 @@ public class MissileLauncher extends RobotComponent {
 	 */
 	public void fire() {
 		Body missileBody = new Body("missile", new Box(5, 20), this.missileMass);
-		missileBody.setPosition(this.componentBody.getPosition().getX(), this.componentBody.getPosition().getY());
-		missileBody.setRotation(this.componentBody.getRotation());
+		missileBody.setPosition(this.getWorldPosX(), this.getWorldPosY());
+		missileBody.setRotation(this.getWorldRotation());
 		
 		for(RobotComponent c : this.robot.getComponents()) {
 			missileBody.addExcludedBody(c.getComponentBody());
