@@ -1,7 +1,5 @@
 package robosim.robot;
 
-import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import robosim.RoboSumoMatch;
@@ -114,31 +112,6 @@ public class SumoRobot extends Robot {
 	public void turnCounterClockwise() {
 		this.wheel_left.setPower(MAX_FORCE * 0.5f);
 		this.wheel_right.setPower(-MAX_FORCE * 0.5f);
-	}
-	
-	private int missileFired = 61;
-	public void fireMissile() {
-		if (this.missileFired < 60)
-		{
-			this.missileFired++;
-			return;
-		}
-		
-		Body missileBody = new Body("missile", new Box(5, 20), 350);
-		missileBody.setPosition(this.getPosX(), this.getPosY());
-		missileBody.setRotation(this.getRotation());
-		missileBody.addExcludedBody(this.getHull().getComponentBody());
-		missileBody.addExcludedBody(this.wheel_left.getComponentBody());
-		missileBody.addExcludedBody(this.wheel_right.getComponentBody());
-		world.add(missileBody);
-		
-		float r = this.getRotation();
-		float x = (float) (-Math.sin(r) * 2000000);
-		float y = (float) (Math.cos(r) * 2000000);
-		
-		missileBody.addForce(new Vector2f(x, y));
-		
-		this.missileFired = 0;
 	}
 
 	@Override
