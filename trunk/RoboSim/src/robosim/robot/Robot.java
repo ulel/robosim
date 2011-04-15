@@ -77,15 +77,15 @@ public abstract class Robot {
 	/**
 	 * Updates the robot for each simulation step.
 	 */
-	public void step() {
+	public void step(boolean[] keys) {
 		for (RobotComponent c : this.components)
 			c.update();
 		
-		this.performBehavior();
+		this.performBehavior(keys);
 	}
 	
 	/**
 	 * This method is called for each simulation step and can be overridden to add robot behavior.
 	 */
-	public void performBehavior() {}
+	public void performBehavior(boolean[] keys) {}
 }

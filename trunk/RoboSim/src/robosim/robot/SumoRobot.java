@@ -142,7 +142,7 @@ public class SumoRobot extends Robot {
 	}
 
 	@Override
-	public void performBehavior() {
+	public void performBehavior(boolean[] keys) {
 		strategy.step(this);
 	}
 }

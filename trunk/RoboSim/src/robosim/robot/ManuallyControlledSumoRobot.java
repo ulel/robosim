@@ -1,7 +1,5 @@
 package robosim.robot;
 
-import java.awt.Frame;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import robosim.RoboSumoMatch;
@@ -23,22 +21,8 @@ public class ManuallyControlledSumoRobot extends Robot {
 	public ContactSensor sensorB;
 	public GroundSensor sensorC;
 	
-	/** Stores key state */
-	protected boolean[] keys = new boolean[525];
-	
-	public ManuallyControlledSumoRobot(World w, float posX, float posY, float rotation, float mass, Frame frame) {
+	public ManuallyControlledSumoRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
-		
-		//Register key press and release.
-		frame.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				keys[e.getKeyCode()] = true;
-			}
-
-			public void keyReleased(KeyEvent e) {
-				keys[e.getKeyCode()] = false;
-			}
-		});
 		
 		this.wheel_left = new WheelMotor(1f, fwd_force);
 		this.wheel_right = new WheelMotor(1f, fwd_force);
@@ -117,7 +101,7 @@ public class ManuallyControlledSumoRobot extends Robot {
 	
 	
 	@Override
-	public void performBehavior() {
+	public void performBehavior(boolean[] keys) {
 		//If no directional keys are pressed, stop the robot.
 		if (!keys[KeyEvent.VK_UP] && !keys[KeyEvent.VK_DOWN] && !keys[KeyEvent.VK_LEFT] && !keys[KeyEvent.VK_RIGHT])
 			this.stop();
