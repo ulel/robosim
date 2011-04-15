@@ -36,7 +36,7 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10, frame);
+		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
 		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
@@ -57,8 +57,8 @@ public class RoboSumoMatch extends Scene {
 
 	@Override
 	protected void step() {
-		r1.step();
-		r2.step();
+		r1.step(keys);
+		r2.step(keys);
 	}
 	
 	@Override

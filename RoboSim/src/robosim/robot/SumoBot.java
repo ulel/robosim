@@ -50,7 +50,7 @@ public class SumoBot extends Robot {
 	}
 
 	@Override
-	public void performBehavior() {
+	public void performBehavior(boolean[] keys) {
 		switch(currentState){
 		
 		case Idle:

@@ -91,7 +91,7 @@ public class Maze extends Scene {
 	@Override
 	protected void step() {
 		super.step();
-		this.r.step();
+		this.r.step(this.keys);
 	}
 	
 	@Override

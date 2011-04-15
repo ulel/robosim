@@ -43,7 +43,7 @@ public class MazeRobot extends Robot {
 	private static final int STATE_BEGIN_TURN = 3;
 	private static final int STATE_TURN = 4;
 	@Override
-	public void performBehavior() {
+	public void performBehavior(boolean[] keys) {
 		if (state == STATE_FWD) {
 			this.wheel_left.setPower(fwd_power);
 			this.wheel_right.setPower(fwd_power);
