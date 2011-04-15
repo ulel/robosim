@@ -1,7 +1,5 @@
 package robosim.robot.components;
 
-import java.awt.geom.AffineTransform;
-
 import net.phys2d.raw.Joint;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.DynamicShape;
@@ -36,9 +34,6 @@ public class RobotHull extends RobotComponent {
 		this.localY = posY;
 		this.rotation = rotation;
 		
-		this.transform = new AffineTransform();
-		this.transform.translate(posX, posY);
-		this.transform.rotate(rotation);
 		
 		this.componentBody.setPosition(this.getLocalPosX(), this.getLocalPosY());
 		this.componentBody.setRotation(this.getLocalRotation());

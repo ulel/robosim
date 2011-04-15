@@ -20,7 +20,6 @@ public abstract class RobotComponent {
 	protected Robot robot;
 	protected Body componentBody;
 	protected Joint robotJoint;
-	protected AffineTransform transform;
 	protected float localX;
 	protected float localY;
 	protected float rotation;
@@ -73,14 +72,14 @@ public abstract class RobotComponent {
 		this.localY = posY;
 		this.rotation = rotation;
 		
-		this.transform = new AffineTransform();
-		this.transform.translate(this.robot.getPosX(), this.robot.getPosY());
-		this.transform.rotate(this.robot.getRotation());
-		this.transform.translate(posX, posY);
-		this.transform.rotate(rotation);
+		AffineTransform transform = new AffineTransform();
+		transform.translate(this.robot.getPosX(), this.robot.getPosY());
+		transform.rotate(this.robot.getRotation());
+		transform.translate(posX, posY);
+		transform.rotate(rotation);
 		
-		this.componentBody.setPosition(this.getWorldPosX(), this.getWorldPosY());
-		this.componentBody.setRotation(this.getWorldRotation());
+		this.componentBody.setPosition((float)transform.getTranslateX(), (float)transform.getTranslateY());
+		this.componentBody.setRotation(this.robot.getRotation() + this.rotation);
 	}
 	
 	/**
@@ -101,17 +100,17 @@ public abstract class RobotComponent {
 	/**
 	 * Returns the components x position in relation to the world.
 	 */
-	public float getWorldPosX() { return (float)this.transform.getTranslateX(); }
+	public float getWorldPosX() { return this.componentBody.getPosition().getX(); } //(float)this.transform.getTranslateX(); }
 	
 	/**
 	 * Returns the components y position in relation to the world.
 	 */
-	public float getWorldPosY() { return (float)this.transform.getTranslateY(); }
+	public float getWorldPosY() { return this.componentBody.getPosition().getY(); } //(float)this.transform.getTranslateY(); }
 	
 	/**
 	 * Returns the components rotation in relation to the world.
 	 */
-	public float getWorldRotation() { return this.robot.getRotation() + this.rotation; }
+	public float getWorldRotation() { return this.componentBody.getRotation(); } //this.robot.getRotation() + this.rotation; }
 	
 	/**
 	 * Returns the body of this component.

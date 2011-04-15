@@ -8,8 +8,6 @@ import robosim.robot.components.sensors.ContactSensor;
 import robosim.robot.components.sensors.GroundSensor;
 import robosim.robot.components.sensors.ProximitySensor;
 import robosim.robot.components.weapons.MissileLauncher;
-import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 
@@ -48,9 +46,9 @@ public class ManuallyControlledSumoRobot extends Robot {
 		this.addComponent(this.sensorC, 0, 0, 0);
 		
 		this.missileLauncher_left = new MissileLauncher(0.0001f, MissileLauncher.MISSILE_MASS, MissileLauncher.MISSILE_FORCE);
-		this.addComponent(this.missileLauncher_left, 21, 0, 0);
+		this.addComponent(this.missileLauncher_left, 19f, 0, 0);
 		this.missileLauncher_right = new MissileLauncher(0.0001f, MissileLauncher.MISSILE_MASS, MissileLauncher.MISSILE_FORCE);
-		this.addComponent(this.missileLauncher_right, -21, 0, 0);
+		this.addComponent(this.missileLauncher_right, -19f, 0, 0);
 	}
 
 
