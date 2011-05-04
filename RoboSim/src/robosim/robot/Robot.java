@@ -30,7 +30,7 @@ public abstract class Robot {
 	public float getPosX() { return this.hull.getWorldPosX(); }
 	
 	/**
-	 * Returns the x position of the robot.
+	 * Returns the y position of the robot.
 	 */
 	public float getPosY() { return this.hull.getWorldPosY(); }
 	
