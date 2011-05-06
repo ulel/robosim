@@ -1,6 +1,6 @@
 package robosim.robot.strategy;
 
-import robosim.robot.SumoRobot;
+import robosim.arena.robosumomatch.robot.SumoRobot;
 
 public interface Action {
 

@@ -1,9 +1,10 @@
 /***
  * FindAndCharge.java - Generated Robot
  */ 
-package robosim.robot;
+package robosim.arena.robosumomatch.robot;
 
-import robosim.RoboSumoMatch;
+import robosim.arena.robosumomatch.RoboSumoMatch;
+import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.*;
 import net.phys2d.raw.World;
@@ -28,6 +29,10 @@ public class FindAndCharge extends Robot {
 	private ProximitySensor frontSensor;
 	private GroundSensor groundSensor;
 	private ContactSensor contactSensor;
+	
+	public FindAndCharge(World w) {
+		this(w, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+	}
 	
 	public FindAndCharge(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);

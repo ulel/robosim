@@ -1,9 +1,10 @@
 /***
  * SumoBot.java - Generated Robot
  */ 
-package robosim.robot;
+package robosim.arena.robosumomatch.robot;
 
-import robosim.RoboSumoMatch;
+import robosim.arena.robosumomatch.RoboSumoMatch;
+import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.*;
 import net.phys2d.raw.World;

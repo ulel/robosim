@@ -1,6 +1,6 @@
 package robosim.robot.strategy.actions;
 
-import robosim.robot.SumoRobot;
+import robosim.arena.robosumomatch.robot.SumoRobot;
 import robosim.robot.strategy.MotorControl;
 
 public class TurnCounterClockwise extends MotorControl {

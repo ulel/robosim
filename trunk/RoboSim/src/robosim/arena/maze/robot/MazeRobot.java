@@ -1,5 +1,6 @@
-package robosim.robot;
+package robosim.arena.maze.robot;
 
+import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.*;
 import net.phys2d.raw.World;
@@ -12,6 +13,10 @@ public class MazeRobot extends Robot {
 	private WheelMotor wheel_right;
 	public ContactSensor sensorFront1;
 	public ContactSensor sensorFront2;
+	
+	public MazeRobot(World w) {
+		this(w, 75, 75, (float)(Math.random() * Math.PI * 2), 10);
+	}
 	
 	public MazeRobot(World w, float posX, float posY, float rotation, float mass) {
 		super(w, posX, posY, rotation, mass);
