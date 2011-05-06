@@ -1,8 +1,9 @@
-package robosim.robot;
+package robosim.arena.robosumomatch.robot;
 
 import java.awt.event.KeyEvent;
 
-import robosim.RoboSumoMatch;
+import robosim.arena.robosumomatch.RoboSumoMatch;
+import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.ContactSensor;
 import robosim.robot.components.sensors.GroundSensor;

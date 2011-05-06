@@ -1,4 +1,4 @@
-package robosim;
+package robosim.arena.robosumomatch;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,17 +9,23 @@ import net.phys2d.raw.Contact;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Circle;
+import robosim.RoboArena;
+import robosim.Scene;
 import robosim.robot.*;
 import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
 
-public class RoboSumoMatch extends Scene {
+public class RoboSumoMatch extends RoboArena {
 	public static final String DOHYO_ARENA = "DohyoArena";
 	public static final long DOHYO_ARENA_BITMASK = 2;
 	public static final String DOHYO_BORDER = "DohyoBorder";
 	
 	Robot r1;
 	Robot r2;
+	
+	Class<Robot> r1Class;
+	Class<Robot> r2Class;
+	
 	StaticBody border;
 	StaticBody arena;
 	
@@ -36,8 +42,18 @@ public class RoboSumoMatch extends Scene {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+//		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+//		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+		try {
+			r1 = r1Class.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
+			r2 = r2Class.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+		} catch (Exception e) { 
+			// TODO: Should maybe catch the individual exceptions but there is
+			// no good way to continue if it happens
+			System.err.println("Error when loading robot.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		
 		arena.setBitmask(DOHYO_ARENA_BITMASK);
 		world.add(arena);
@@ -112,6 +128,17 @@ public class RoboSumoMatch extends Scene {
 	 */
 	public static void main(String[] args) {
 		new RoboSumoMatch("SumoRobot").start();
+	}
+
+	@Override
+	public void setRobots(Class<Robot>[] robots) {
+		r1Class = robots[0];
+		r2Class = robots[1];
+	}
+
+	@Override
+	public int numberOfRobots() {
+		return 2;
 	}
 
 }

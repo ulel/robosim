@@ -1,7 +1,11 @@
-package robosim;
+package robosim.arena.maze;
 
 import java.awt.Graphics2D;
+import java.lang.reflect.InvocationTargetException;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
+import robosim.RoboArena;
 import robosim.robot.*;
 import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
@@ -12,7 +16,7 @@ import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.Circle;
 
-public class Maze extends Scene {
+public class Maze extends RoboArena {
 
 	private Robot r;
 	private StaticBody goal;
@@ -20,6 +24,7 @@ public class Maze extends Scene {
 	private long start;
 	private long best_time = Long.MAX_VALUE;
 	private long current_time = 0;
+	private Class<Robot> robotClass;
 	
 	public Maze(String title) {
 		super(title);
@@ -32,7 +37,15 @@ public class Maze extends Scene {
 		this.createBorder();
 		this.createMaze();
 		
-		this.r = new MazeRobot2(world, 75, 75, (float)(Math.random() * Math.PI * 2), 10);
+		try {
+			r = robotClass.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 75, 75, (float)(Math.random() * Math.PI * 2), 10);
+		} catch (Exception e) { 
+			// TODO: Should maybe catch the individual exceptions but there is
+			// no good way to continue if it happens
+			System.err.println("Error when loading robot.");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		
 		start = System.currentTimeMillis() / 1000;
 	}
@@ -146,5 +159,16 @@ public class Maze extends Scene {
 	
 	public static void main(String[] args) {
 		new Maze("Maze").start();
+	}
+
+
+	@Override
+	public void setRobots(Class<Robot>[] robots) {
+		robotClass = robots[0];
+	}
+
+	@Override
+	public int numberOfRobots() {
+		return 1;
 	}
 }

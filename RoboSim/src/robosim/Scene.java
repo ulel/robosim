@@ -51,6 +51,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.lang.reflect.InvocationTargetException;
 
 import net.phys2d.math.MathUtil;
 import net.phys2d.math.Matrix2f;
