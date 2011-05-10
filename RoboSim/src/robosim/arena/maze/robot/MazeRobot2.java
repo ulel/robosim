@@ -1,11 +1,11 @@
 package robosim.arena.maze.robot;
 
+import net.phys2d.raw.World;
+import net.phys2d.raw.shapes.Circle;
 import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
-import robosim.robot.components.sensors.*;
-import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.Box;
-import net.phys2d.raw.shapes.Circle;
+import robosim.robot.components.sensors.ProximitySensor;
+import robosim.robot.strategy.Strategy;
 
 public class MazeRobot2 extends Robot {
 
@@ -15,8 +15,8 @@ public class MazeRobot2 extends Robot {
 	public ProximitySensor sensorFront1;
 	public ProximitySensor sensorFront2;
 
-	public MazeRobot2(World w, float posX, float posY, float rotation, float mass) {
-		super(w, posX, posY, rotation, mass);
+	public MazeRobot2(World w, float posX, float posY, float rotation, float mass, Strategy strategy) {
+		super(w, posX, posY, rotation, mass, strategy);
 		
 		this.wheel_left = new WheelMotor(1f, fwd_power);
 		this.wheel_right = new WheelMotor(1f, fwd_power);

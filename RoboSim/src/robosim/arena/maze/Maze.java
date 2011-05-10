@@ -1,20 +1,19 @@
 package robosim.arena.maze;
 
 import java.awt.Graphics2D;
-import java.lang.reflect.InvocationTargetException;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
-import robosim.RoboArena;
-import robosim.robot.*;
-import robosim.robot.components.RobotComponent;
-import robosim.robot.components.sensors.Sensor;
 import net.phys2d.raw.Collide;
 import net.phys2d.raw.Contact;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Box;
 import net.phys2d.raw.shapes.Circle;
+import robosim.RoboArena;
+import robosim.robot.Robot;
+import robosim.robot.components.RobotComponent;
+import robosim.robot.components.sensors.Sensor;
+import robosim.robot.strategy.NullStrategy;
+import robosim.robot.strategy.Strategy;
 
 public class Maze extends RoboArena {
 
@@ -38,7 +37,7 @@ public class Maze extends RoboArena {
 		this.createMaze();
 		
 		try {
-			r = robotClass.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 75, 75, (float)(Math.random() * Math.PI * 2), 10);
+			r = robotClass.getConstructor(World.class, float.class, float.class, float.class, float.class, Strategy.class).newInstance(world, 75, 75, (float)(Math.random() * Math.PI * 2), 10, new NullStrategy());
 		} catch (Exception e) { 
 			// TODO: Should maybe catch the individual exceptions but there is
 			// no good way to continue if it happens
@@ -170,5 +169,11 @@ public class Maze extends RoboArena {
 	@Override
 	public int numberOfRobots() {
 		return 1;
+	}
+
+	@Override
+	public void setStrategies(Class<Strategy>[] strategies) {
+		// TODO Auto-generated method stub
+		
 	}
 }

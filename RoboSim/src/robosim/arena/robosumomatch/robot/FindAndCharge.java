@@ -3,12 +3,15 @@
  */ 
 package robosim.arena.robosumomatch.robot;
 
+import net.phys2d.raw.World;
+import net.phys2d.raw.shapes.Box;
 import robosim.arena.robosumomatch.RoboSumoMatch;
 import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
-import robosim.robot.components.sensors.*;
-import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.Box;
+import robosim.robot.components.sensors.ContactSensor;
+import robosim.robot.components.sensors.GroundSensor;
+import robosim.robot.components.sensors.ProximitySensor;
+import robosim.robot.strategy.Strategy;
 
 public class FindAndCharge extends Robot {
 
@@ -30,12 +33,9 @@ public class FindAndCharge extends Robot {
 	private GroundSensor groundSensor;
 	private ContactSensor contactSensor;
 	
-	public FindAndCharge(World w) {
-		this(w, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-	}
 	
-	public FindAndCharge(World w, float posX, float posY, float rotation, float mass) {
-		super(w, posX, posY, rotation, mass);
+	public FindAndCharge(World w, float posX, float posY, float rotation, float mass, Strategy strategy) {
+		super(w, posX, posY, rotation, mass, strategy);
 		
 		this.wheel_left = new WheelMotor(1f, MAX_FWD_FORCE);
 		this.wheel_right = new WheelMotor(1f, MAX_FWD_FORCE);

@@ -1,6 +1,7 @@
 package robosim.robot.strategy;
 
 import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.robot.Robot;
 
 public class Transition {
 
@@ -20,7 +21,7 @@ public class Transition {
 		return event.evaluate();
 	}
 	
-	public void performAction(SumoRobot robot) {
+	public void performAction(Robot robot) {
 		action.perform(robot);
 	}
 

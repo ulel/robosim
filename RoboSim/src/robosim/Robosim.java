@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import robosim.robot.Robot;
+import robosim.robot.strategy.Strategy;
 
 public class Robosim {
 	public static void main(String[] args) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException {
@@ -21,7 +22,6 @@ public class Robosim {
 	}
 	
 	public void start() throws MalformedURLException, ClassNotFoundException, IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		// String root = "C:/Users/Ulf/dev/eclipse_workspaces/univ/mde_workspace/RoboSim/bin";
 		String root = new File(".").getAbsolutePath() + "/bin";
 		
 		System.out.println("Root directory: " + root);
@@ -29,31 +29,46 @@ public class Robosim {
 		
 		String choosenGame = chooseGame(root);
 
-		RoboArena game = instansiateGame(cl, choosenGame);
-		String[] choosenRobot = chooseRobots(root, choosenGame, game.numberOfRobots());
+		RoboArena game = instantiateGame(cl, choosenGame);
+		String[][] choosenRobots = chooseRobots(root, choosenGame, game.numberOfRobots());
 		
-		Class<Robot>[] robotClasses = getRobotClasses(cl, choosenRobot);
+		Class<Robot>[] robotClasses = getRobotClasses(cl, choosenRobots);
+		Class<Strategy>[] strategyClasses = getStrategyClasses(cl, choosenRobots);
 		
 		game.setRobots((Class<Robot>[]) robotClasses);
+		game.setStrategies((Class<Strategy>[]) strategyClasses);
 		game.start();
 	}
 
 	@SuppressWarnings("unchecked")
-	private Class<Robot>[] getRobotClasses(URLClassLoader cl,
-			String[] choosenRobots) throws ClassNotFoundException {
+	private Class<Robot>[] getRobotClasses(URLClassLoader cl, String[][] choosenRobots) throws ClassNotFoundException {
 		
 		Class<Robot>[] robotClasses = (Class<Robot>[]) Array.newInstance(Class.class, choosenRobots.length);
 		
 		int i = 0;
-		for (String robotName : choosenRobots) {
-			robotClasses[i] = (Class<Robot>) cl.loadClass(robotName);
+		for (String[] robot : choosenRobots) {
+			robotClasses[i] = (Class<Robot>) cl.loadClass(robot[0]);
 			i++;
 		}
 		
 		return robotClasses;
 	}
+	
+	@SuppressWarnings("unchecked")
+	private Class<Strategy>[] getStrategyClasses(URLClassLoader cl, String[][] choosenRobots) throws ClassNotFoundException {
+		
+		Class<Strategy>[] strategyClasses = (Class<Strategy>[]) Array.newInstance(Class.class, choosenRobots.length);
+		
+		int i = 0;
+		for (String[] robot : choosenRobots) {
+			strategyClasses[i] = (Class<Strategy>) cl.loadClass(robot[1]);
+			i++;
+		}
+		
+		return strategyClasses;
+	}
 
-	private RoboArena instansiateGame(URLClassLoader cl, String choosenGame)
+	private RoboArena instantiateGame(URLClassLoader cl, String choosenGame)
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
@@ -62,9 +77,9 @@ public class Robosim {
 		RoboArena game = gameClass.getConstructor(String.class).newInstance("Test");
 		return game;
 	}
-
-	private String[] chooseRobots(String root, String choosenGame, int numberOfRobots) {
-		String[] choosenRobots = (String[]) Array.newInstance(String.class, numberOfRobots);
+	
+	private String[][] chooseRobots(String root, String choosenGame, int numberOfRobots) {
+		String[][] choosenRobots = new String[numberOfRobots][2];
 	
 		String[] availableRobotsForGame = getRobotsForGame(root, choosenGame);
 		System.out.println("Available robots for " + choosenGame + ":");
@@ -78,16 +93,34 @@ public class Robosim {
 		
 		for(i = 0; i < numberOfRobots; i++) {
 			System.out.println("Choose robot " + (i+1));
-			choosenRobots[i] = chooseRobot(availableRobotsForGame);
+			String choosenRobot = chooseRobot(availableRobotsForGame);
+			String choosenStrategy = chooseStrategy(root, choosenRobot);
+			choosenRobots[i] = new String[] { choosenRobot, choosenStrategy };
 		}
 		
 		return choosenRobots;
 	}
 
+	private String chooseStrategy(String root, String choosenRobot) {
+		String[] availableStrategiesForRobot = getStrategiesForRobot(root, choosenRobot);
+		System.out.println("Available strategies for " + choosenRobot + ":");
+		int i = 0;
+		for (String strategyName : availableStrategiesForRobot) {
+			i++;
+			System.out.println("  [" + i + "] " + strategyName);
+		}
+		
+		System.out.println("Choose strategy");
+		String choosenStrategy = availableStrategiesForRobot[getChoiceFromUser()-1];
+		System.out.println("Chosen staragey: " + choosenStrategy);
+		
+		return choosenStrategy;
+	}
+
 	private String chooseRobot(String[] availableRobots) {
 
 		String choosenRobot = availableRobots[getChoiceFromUser()-1];
-		System.out.println("Choosen robot: " + choosenRobot);
+		System.out.println("Chosen robot: " + choosenRobot);
 		return choosenRobot;
 	}
 
@@ -102,7 +135,7 @@ public class Robosim {
 		}
 
 		String choosenGame = availableGames[getChoiceFromUser()-1];
-		System.out.println("Choosen game: " + choosenGame);
+		System.out.println("Chosen game: " + choosenGame);
 		return choosenGame;
 	}
 
@@ -153,6 +186,24 @@ public class Robosim {
 		}
 		
 		return arrayListToStringArray(robots);
+	}
+	
+	public String[] getStrategiesForRobot(String root, String robotName) {
+		String strategiesPackage = robotName.substring(0, robotName.lastIndexOf('.')) + ".strategies";
+		
+		String robotDir = new File(root + "/" + robotName.replace(".", "/") + ".class").getParent();
+		File strategiesDir = new File(robotDir + "/strategies");
+		
+		ArrayList<String> strategies = new ArrayList<String>();
+		strategies.add("robosim.robot.strategy.NullStrategy");
+		
+		File[] availableStrategies = strategiesDir.listFiles(new ClassFilenameFilter());
+		for (File strategy : availableStrategies) {
+			String strategyName = getClassName(strategy);
+			strategies.add(strategiesPackage + "." + strategyName);
+		}
+		
+		return arrayListToStringArray(strategies);
 	}
 	
 	private class ClassFilenameFilter implements FilenameFilter {
