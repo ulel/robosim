@@ -10,10 +10,13 @@ import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
 import net.phys2d.raw.shapes.Circle;
 import robosim.RoboArena;
-import robosim.Scene;
-import robosim.robot.*;
+import robosim.arena.robosumomatch.robot.ManuallyControlledSumoRobot;
+import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.robot.Robot;
 import robosim.robot.components.RobotComponent;
 import robosim.robot.components.sensors.Sensor;
+import robosim.robot.strategy.NullStrategy;
+import robosim.robot.strategy.Strategy;
 
 public class RoboSumoMatch extends RoboArena {
 	public static final String DOHYO_ARENA = "DohyoArena";
@@ -26,6 +29,9 @@ public class RoboSumoMatch extends RoboArena {
 	Class<Robot> r1Class;
 	Class<Robot> r2Class;
 	
+	Class<Strategy> r1StrategyClass;
+	Class<Strategy> r2StrategyClass;
+
 	StaticBody border;
 	StaticBody arena;
 	
@@ -42,11 +48,13 @@ public class RoboSumoMatch extends RoboArena {
 		arena = new StaticBody(RoboSumoMatch.DOHYO_ARENA, new Circle(220));
 		arena.setPosition(250, 270);
 				
-//		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-//		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+//		r1 = new ManuallyControlledSumoRobot(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10, new NullStrategy());
+//		r2 = new SumoRobot(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10, new NullStrategy());
 		try {
-			r1 = r1Class.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10);
-			r2 = r2Class.getConstructor(World.class, float.class, float.class, float.class, float.class).newInstance(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10);
+			Strategy r1Strategy = r1StrategyClass.getConstructor().newInstance();
+			Strategy r2Strategy = r2StrategyClass.getConstructor().newInstance();
+			r1 = r1Class.getConstructor(World.class, float.class, float.class, float.class, float.class, Strategy.class).newInstance(world, 250, 200, (float)(Math.random() * Math.PI * 2), 10, r1Strategy);
+			r2 = r2Class.getConstructor(World.class, float.class, float.class, float.class, float.class, Strategy.class).newInstance(world, 250, 360, (float)(Math.random() * Math.PI * 2), 10, r2Strategy);
 		} catch (Exception e) { 
 			// TODO: Should maybe catch the individual exceptions but there is
 			// no good way to continue if it happens
@@ -123,17 +131,16 @@ public class RoboSumoMatch extends RoboArena {
 		g.fillOval((int) (x-r),(int) (y-r),(int) (r*2),(int) (r*2));
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new RoboSumoMatch("SumoRobot").start();
-	}
-
 	@Override
 	public void setRobots(Class<Robot>[] robots) {
 		r1Class = robots[0];
 		r2Class = robots[1];
+	}
+	
+	@Override
+	public void setStrategies(Class<Strategy>[] strategies) {
+		r1StrategyClass = strategies[0];
+		r2StrategyClass = strategies[1];
 	}
 
 	@Override

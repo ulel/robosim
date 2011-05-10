@@ -1,16 +1,15 @@
 package robosim.robot.strategy;
 
 import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.robot.Robot;
 
 public abstract class Strategy {
 	
 	protected State currentState;
 	
-	public Strategy() {
-		initStrategy();
-	}
+	public Strategy() { }
 	
-	public void step(SumoRobot robot) {
+	public void step(Robot robot) {
 		for (Transition transition : currentState.transitions) {
 			if (transition.isValid()) {
 				transition.performAction(robot);
@@ -20,6 +19,6 @@ public abstract class Strategy {
 		}
 	}
 	
-	public abstract void initStrategy();
+	public abstract void initStrategy(Robot robot);
 	
 }

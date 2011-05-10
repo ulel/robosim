@@ -8,14 +8,7 @@ import robosim.robot.components.actuators.WheelMotor;
 import robosim.robot.components.sensors.ContactSensor;
 import robosim.robot.components.sensors.GroundSensor;
 import robosim.robot.components.sensors.ProximitySensor;
-import robosim.robot.strategy.Event;
-import robosim.robot.strategy.Expression;
-import robosim.robot.strategy.State;
 import robosim.robot.strategy.Strategy;
-import robosim.robot.strategy.Transition;
-import robosim.robot.strategy.actions.Forward;
-import robosim.robot.strategy.actions.TurnClockwise;
-import robosim.robot.strategy.actions.TurnCounterClockwise;
 
 public class SumoRobot extends Robot {
 
@@ -26,10 +19,9 @@ public class SumoRobot extends Robot {
 	public ContactSensor sensorB;
 	public GroundSensor sensorC;
 	
-	private Strategy strategy;
 	
-	public SumoRobot(World w, float posX, float posY, float rotation, float mass) {
-		super(w, posX, posY, rotation, mass);
+	public SumoRobot(World w, float posX, float posY, float rotation, float mass, Strategy strategy) {
+		super(w, posX, posY, rotation, mass, strategy);
 		
 		this.wheel_left = new WheelMotor(1f, MAX_FORCE);
 		this.wheel_right = new WheelMotor(1f, MAX_FORCE);
@@ -49,48 +41,7 @@ public class SumoRobot extends Robot {
 		
 		this.sensorC = new GroundSensor(RoboSumoMatch.DOHYO_ARENA_BITMASK);
 		this.addComponent(this.sensorC, 0, 0, 0);
-		
-		setupStrategy();
 	}
-
-	private void setupStrategy() {
-		final Event foundEnemyEvent = new Event("foundEnemy", new Expression() {
-			@Override
-			public boolean evaluate() {
-				return sensorA.getSensorValue() > 0;
-			}
-		});
-		
-		final Event lostEnemyEvent = new Event("lostEnemy", new Expression() {
-			@Override
-			public boolean evaluate() {
-				return sensorA.getSensorValue() == 0;
-			}
-		});
-		
-		final Event alwaysTrueEvent = new Event("true", new Expression() {
-			@Override
-			public boolean evaluate() {
-				return true;
-			}
-		});
-		
-		strategy = new Strategy() {
-			@Override
-			public void initStrategy() {
-				State idleState = new State("idle");
-				State findState = new State("find");
-				State attackState = new State("attack");
-
-				idleState.addTransition(new Transition("start", alwaysTrueEvent, new TurnClockwise(1), findState));
-				findState.addTransition(new Transition("findToAttack", foundEnemyEvent, new Forward(1), attackState));
-				attackState.addTransition(new Transition("attackToFind", lostEnemyEvent, new TurnCounterClockwise(1), findState));				
-
-				currentState = idleState;
-			}
-		};
-	}
-
 
 
 	private final float MAX_FORCE = 100;

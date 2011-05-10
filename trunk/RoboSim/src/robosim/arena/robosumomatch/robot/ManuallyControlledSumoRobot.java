@@ -2,6 +2,8 @@ package robosim.arena.robosumomatch.robot;
 
 import java.awt.event.KeyEvent;
 
+import net.phys2d.raw.World;
+import net.phys2d.raw.shapes.Box;
 import robosim.arena.robosumomatch.RoboSumoMatch;
 import robosim.robot.Robot;
 import robosim.robot.components.actuators.WheelMotor;
@@ -9,8 +11,7 @@ import robosim.robot.components.sensors.ContactSensor;
 import robosim.robot.components.sensors.GroundSensor;
 import robosim.robot.components.sensors.ProximitySensor;
 import robosim.robot.components.weapons.MissileLauncher;
-import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.Box;
+import robosim.robot.strategy.Strategy;
 
 public class ManuallyControlledSumoRobot extends Robot {
 
@@ -24,8 +25,8 @@ public class ManuallyControlledSumoRobot extends Robot {
 	public MissileLauncher missileLauncher_left;
 	public MissileLauncher missileLauncher_right;
 	
-	public ManuallyControlledSumoRobot(World w, float posX, float posY, float rotation, float mass) {
-		super(w, posX, posY, rotation, mass);
+	public ManuallyControlledSumoRobot(World w, float posX, float posY, float rotation, float mass, Strategy strategy) {
+		super(w, posX, posY, rotation, mass, strategy);
 		
 		this.wheel_left = new WheelMotor(1f, fwd_force);
 		this.wheel_right = new WheelMotor(1f, fwd_force);

@@ -1,9 +1,9 @@
 package robosim.robot.strategy;
 
-import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.robot.Robot;
 
 public interface Action {
 
-	public void perform(SumoRobot robot);
+	public void perform(Robot robot);
 
 }

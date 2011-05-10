@@ -1,6 +1,7 @@
-package robosim.robot.strategy.actions;
+package robosim.arena.robosumomatch.robot.actions;
 
 import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.robot.Robot;
 import robosim.robot.strategy.MotorControl;
 
 public class TurnCounterClockwise extends MotorControl {
@@ -10,8 +11,8 @@ public class TurnCounterClockwise extends MotorControl {
 	}
 
 	@Override
-	public void perform(SumoRobot robot) {
-		robot.turnClockwise();
+	public void perform(Robot robot) {
+		((SumoRobot)robot).turnClockwise();
 	}
 	
 }

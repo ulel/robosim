@@ -1,11 +1,12 @@
 package robosim.robot;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
+import net.phys2d.raw.World;
 import robosim.robot.components.RobotComponent;
 import robosim.robot.components.RobotHull;
-import net.phys2d.raw.World;
+import robosim.robot.strategy.Strategy;
 
 /**
  * The Robot class provides an abstract baseclass for all robots.
@@ -13,15 +14,19 @@ import net.phys2d.raw.World;
 public abstract class Robot {
 
 	protected World world;
+	protected Strategy strategy;
 	private RobotHull hull;
 	private LinkedList<RobotComponent> components;
 	
-	public Robot(World w, float posX, float posY, float rotation, float mass) {
+	public Robot(World w, float posX, float posY, float rotation, float mass, Strategy strategy) {
 		this.world = w;
 		this.components = new LinkedList<RobotComponent>();
 		
 		this.hull = new RobotHull(mass);
 		this.addComponent(this.hull, posX, posY, rotation);
+		
+		this.strategy = strategy;
+		this.strategy.initStrategy(this);
 	}
 
 	/**
