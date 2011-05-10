@@ -21,8 +21,8 @@ public class Robosim {
 	}
 	
 	public void start() throws MalformedURLException, ClassNotFoundException, IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		// String root = "C:\\Users\\Ulf\\dev\\eclipse_workspaces\\univ\\mde_workspace\\RoboSim\\bin";
-		String root = new File(".").getAbsolutePath() + "\\bin";
+		// String root = "C:/Users/Ulf/dev/eclipse_workspaces/univ/mde_workspace/RoboSim/bin";
+		String root = new File(".").getAbsolutePath() + "/bin";
 		
 		System.out.println("Root directory: " + root);
 		URLClassLoader cl = getClassLoader(root);
@@ -120,10 +120,10 @@ public class Robosim {
 	}
 	
 	public String[] getGames(String root) {
-		String gameDir = "robosim\\arena";
-		String gamePackage = gameDir.replace("\\", ".") + ".";
+		String gameDir = "robosim/arena";
+		String gamePackage = gameDir.replace("/", ".") + ".";
 		
-		File[] gameDirs = new File(root + "\\" + gameDir).listFiles();
+		File[] gameDirs = new File(root + "/" + gameDir).listFiles();
 		
 		ArrayList<String> gameClassNames = new ArrayList<String>();
 		
@@ -141,8 +141,8 @@ public class Robosim {
 	public String[] getRobotsForGame(String root, String gameName) {
 		String robotPackage = gameName.substring(0, gameName.lastIndexOf('.')) + ".robot";
 		
-		String gameDir = new File(root + "\\" + gameName.replace(".", "\\") + ".class").getParent();
-		File robotDir = new File(gameDir + "\\robot");
+		String gameDir = new File(root + "/" + gameName.replace(".", "/") + ".class").getParent();
+		File robotDir = new File(gameDir + "/robot");
 		
 		ArrayList<String> robots = new ArrayList<String>();
 		
