@@ -5,7 +5,8 @@ import robosim.robot.Robot;
 
 public abstract class Strategy {
 	
-	protected State currentState;
+	private State currentState;
+	private long stateSwitchTime;
 	
 	public Strategy() { }
 	
@@ -13,12 +14,21 @@ public abstract class Strategy {
 		for (Transition transition : currentState.transitions) {
 			if (transition.isValid()) {
 				transition.performAction(robot);
-				currentState = transition.targetState;
+				setState(transition.targetState);
 				break;
 			}
 		}
 	}
 	
 	public abstract void initStrategy(Robot robot);
+	
+	protected void setState(State state) {
+		currentState = state;
+		stateSwitchTime = System.currentTimeMillis();
+	}
+	
+	protected long getTimeSinceLastStateSwitch() {
+		return System.currentTimeMillis() - stateSwitchTime;
+	}
 	
 }

@@ -2,18 +2,15 @@ package robosim.robot.strategy;
 
 import robosim.robot.Robot;
 
-public class Event {
+public abstract class Event {
 	
 	private String name;
-	private Expression expression;
 	
-	public Event(String name, Expression expression) {
+	
+	public Event(String name) {
 		this.name = name;
-		this.expression = expression;
 	}
 	
-	public boolean evaluate() {
-		return expression.evaluate();
-	}
+	abstract public boolean evaluate();
 	
 }
