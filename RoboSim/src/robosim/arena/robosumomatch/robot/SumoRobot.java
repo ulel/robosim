@@ -22,28 +22,23 @@ public abstract class SumoRobot extends Robot {
 
 	private final float MAX_FORCE = 100;
 	
-	public void forward() {
-		this.wheel_left.setPower(MAX_FORCE);
-		this.wheel_right.setPower(MAX_FORCE);
+	public void forward(float speed) {
+		this.wheel_left.setPower(MAX_FORCE * speed);
+		this.wheel_right.setPower(MAX_FORCE * speed);
 	}
 	
-	public void backward() {
-		this.wheel_left.setPower(-MAX_FORCE);
-		this.wheel_right.setPower(-MAX_FORCE);
+	public void backward(float speed) {
+		this.wheel_left.setPower(-MAX_FORCE * speed);
+		this.wheel_right.setPower(-MAX_FORCE * speed);
 	}
 	
-	public void turnClockwise() {
-		this.wheel_left.setPower(-MAX_FORCE * 0.5f);
-		this.wheel_right.setPower(MAX_FORCE * 0.5f);
+	public void turnClockwise(float speed) {
+		this.wheel_left.setPower(-MAX_FORCE * speed);
+		this.wheel_right.setPower(MAX_FORCE * speed);
 	}
 	
-	public void turnCounterClockwise() {
-		this.wheel_left.setPower(MAX_FORCE * 0.5f);
-		this.wheel_right.setPower(-MAX_FORCE * 0.5f);
-	}
-
-	@Override
-	public void performBehavior(boolean[] keys) {
-		strategy.step(this);
+	public void turnCounterClockwise(float speed) {
+		this.wheel_left.setPower(MAX_FORCE * speed);
+		this.wheel_right.setPower(-MAX_FORCE * speed);
 	}
 }
