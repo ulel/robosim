@@ -1,15 +1,23 @@
 package robosim.arena.robosumomatch.robot.strategies;
 
-import robosim.arena.robosumomatch.robot.SumoRobot;
-import robosim.arena.robosumomatch.robot.actions.*;
+import robosim.arena.robosumomatch.robot.MySumoRobot;
+import robosim.arena.robosumomatch.robot.actions.Forward;
+import robosim.arena.robosumomatch.robot.actions.TurnClockwise;
+import robosim.arena.robosumomatch.robot.actions.TurnCounterClockwise;
 import robosim.robot.Robot;
-import robosim.robot.strategy.*;
+import robosim.robot.strategy.Event;
+import robosim.robot.strategy.Expression;
+import robosim.robot.strategy.ExpressionEvent;
+import robosim.robot.strategy.State;
+import robosim.robot.strategy.Strategy;
+import robosim.robot.strategy.TimerEvent;
+import robosim.robot.strategy.Transition;
 
 public class FindAndChargeAlternating extends Strategy {
 	
 	@Override
 	public void initStrategy(Robot robot) {
-		final SumoRobot sumoRobot = (SumoRobot)robot;
+		final MySumoRobot sumoRobot = (MySumoRobot)robot;
 		
 		final Event wait5Seconds = new TimerEvent("Wait5Seconds", this, 5000);
 
