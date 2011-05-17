@@ -6,13 +6,13 @@ import robosim.robot.strategy.MotorControl;
 
 public class TurnCounterClockwise extends MotorControl {
 
-	public TurnCounterClockwise(int speed) {
+	public TurnCounterClockwise(float speed) {
 		super(speed);
 	}
 
 	@Override
 	public void perform(Robot robot) {
-		((SumoRobot)robot).turnClockwise();
+		((SumoRobot)robot).turnClockwise(speed);
 	}
 	
 }
