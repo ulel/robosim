@@ -6,13 +6,13 @@ import robosim.robot.strategy.MotorControl;
 
 public class Backward extends MotorControl {
 
-	public Backward(int speed) {
+	public Backward(float speed) {
 		super(speed);
 	}
 
 	@Override
 	public void perform(Robot robot) {
-		((SumoRobot)robot).backward();
+		((SumoRobot)robot).backward(speed);
 	}
 	
 }
