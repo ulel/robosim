@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -30,7 +31,7 @@ public class Robosim {
 		String choosenGame = chooseGame(root);
 
 		RoboArena game = instantiateGame(cl, choosenGame);
-		String[][] choosenRobots = chooseRobots(root, choosenGame, game.numberOfRobots());
+		String[][] choosenRobots = chooseRobots(cl, root, choosenGame, game.numberOfRobots());
 		
 		Class<Robot>[] robotClasses = getRobotClasses(cl, choosenRobots);
 		Class<Strategy>[] strategyClasses = getStrategyClasses(cl, choosenRobots);
@@ -78,10 +79,10 @@ public class Robosim {
 		return game;
 	}
 	
-	private String[][] chooseRobots(String root, String choosenGame, int numberOfRobots) {
+	private String[][] chooseRobots(URLClassLoader cl, String root, String choosenGame, int numberOfRobots) throws ClassNotFoundException {
 		String[][] choosenRobots = new String[numberOfRobots][2];
 	
-		String[] availableRobotsForGame = getRobotsForGame(root, choosenGame);
+		String[] availableRobotsForGame = getRobotsForGame(cl, root, choosenGame);
 		System.out.println("Available robots for " + getShortClassName(choosenGame) + ":");
 		int i = 0;
 		for (String robotName : availableRobotsForGame) {
@@ -171,7 +172,7 @@ public class Robosim {
 		return arrayList.toArray((String[]) Array.newInstance(String.class, arrayList.size()));
 	}
 	
-	public String[] getRobotsForGame(String root, String gameName) {
+	public String[] getRobotsForGame(URLClassLoader cl, String root, String gameName) throws ClassNotFoundException {
 		String robotPackage = gameName.substring(0, gameName.lastIndexOf('.')) + ".robot";
 		
 		String gameDir = new File(root + "/" + gameName.replace(".", "/") + ".class").getParent();
@@ -182,7 +183,11 @@ public class Robosim {
 		File[] availableRobots = robotDir.listFiles(new ClassFilenameFilter());
 		for (File robot : availableRobots) {
 			String robotName = getClassName(robot);
-			robots.add(robotPackage + "." + robotName);
+			@SuppressWarnings("unchecked")
+			Class<Robot> robotClass = (Class<Robot>) cl.loadClass(robotPackage + "." + robotName);
+			if (!Modifier.isAbstract(robotClass.getModifiers())) {
+				robots.add(robotPackage + "." + robotName);
+			}
 		}
 		
 		return arrayListToStringArray(robots);
