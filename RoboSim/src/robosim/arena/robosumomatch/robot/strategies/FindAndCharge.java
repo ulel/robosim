@@ -1,6 +1,6 @@
 package robosim.arena.robosumomatch.robot.strategies;
 
-import robosim.arena.robosumomatch.robot.SumoRobot;
+import robosim.arena.robosumomatch.robot.MySumoRobot;
 import robosim.arena.robosumomatch.robot.actions.Forward;
 import robosim.arena.robosumomatch.robot.actions.TurnClockwise;
 import robosim.arena.robosumomatch.robot.actions.TurnCounterClockwise;
@@ -21,7 +21,7 @@ public class FindAndCharge extends Strategy {
 		State findState = new State("find");
 		State attackState = new State("attack");
 		
-		final SumoRobot sumoRobot = (SumoRobot)robot;
+		final MySumoRobot sumoRobot = (MySumoRobot)robot;
 		
 		final Event foundEnemyEvent = new ExpressionEvent("foundEnemy", new Expression() {
 			@Override
