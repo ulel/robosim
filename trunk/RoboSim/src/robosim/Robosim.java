@@ -82,11 +82,11 @@ public class Robosim {
 		String[][] choosenRobots = new String[numberOfRobots][2];
 	
 		String[] availableRobotsForGame = getRobotsForGame(root, choosenGame);
-		System.out.println("Available robots for " + choosenGame + ":");
+		System.out.println("Available robots for " + getShortClassName(choosenGame) + ":");
 		int i = 0;
 		for (String robotName : availableRobotsForGame) {
 			i++;
-			System.out.println("  [" + i + "] " + robotName);
+			System.out.println("  [" + i + "] " + getShortClassName(robotName));
 		}
 		
 		System.out.println("Should choose " + numberOfRobots + " robots.");
@@ -103,16 +103,16 @@ public class Robosim {
 
 	private String chooseStrategy(String root, String choosenRobot) {
 		String[] availableStrategiesForRobot = getStrategiesForRobot(root, choosenRobot);
-		System.out.println("Available strategies for " + choosenRobot + ":");
+		System.out.println("Available strategies for " + getShortClassName(choosenRobot) + ":");
 		int i = 0;
 		for (String strategyName : availableStrategiesForRobot) {
 			i++;
-			System.out.println("  [" + i + "] " + strategyName);
+			System.out.println("  [" + i + "] " + getShortClassName(strategyName));
 		}
 		
 		System.out.println("Choose strategy");
 		String choosenStrategy = availableStrategiesForRobot[getChoiceFromUser()-1];
-		System.out.println("Chosen staragey: " + choosenStrategy);
+		System.out.println("Chosen strategy: " + getShortClassName(choosenStrategy));
 		
 		return choosenStrategy;
 	}
@@ -120,7 +120,7 @@ public class Robosim {
 	private String chooseRobot(String[] availableRobots) {
 
 		String choosenRobot = availableRobots[getChoiceFromUser()-1];
-		System.out.println("Chosen robot: " + choosenRobot);
+		System.out.println("Chosen robot: " + getShortClassName(choosenRobot));
 		return choosenRobot;
 	}
 
@@ -131,11 +131,11 @@ public class Robosim {
 		int i = 0;
 		for (String gameName : availableGames) {
 			i++;
-			System.out.println("  [" + i + "] " + gameName);
+			System.out.println("  [" + i + "] " + getShortClassName(gameName));
 		}
 
 		String choosenGame = availableGames[getChoiceFromUser()-1];
-		System.out.println("Chosen game: " + choosenGame);
+		System.out.println("Chosen game: " + getShortClassName(choosenGame));
 		return choosenGame;
 	}
 
@@ -242,5 +242,9 @@ public class Robosim {
 		String name = file.getName();
 		int dotIndex = name.lastIndexOf('.');
 		return name.substring(0, dotIndex);
+	}
+	
+	private String getShortClassName(String fullClassName) {
+		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
 	}
 }
