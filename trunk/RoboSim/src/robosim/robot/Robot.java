@@ -86,11 +86,14 @@ public abstract class Robot {
 		for (RobotComponent c : this.components)
 			c.update();
 		
+		if (this.strategy != null)
+			strategy.step(this);
+		
 		this.performBehavior(keys);
 	}
 	
 	/**
 	 * This method is called for each simulation step and can be overridden to add robot behavior.
 	 */
-	public void performBehavior(boolean[] keys) {}
+	public void performBehavior(boolean[] keys) { }
 }
